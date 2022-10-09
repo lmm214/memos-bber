@@ -1,0 +1,32 @@
+{
+   "background": {
+      "scripts": [ "js/background.js" ]
+   },
+   "browser_action": {
+      "default_icon": "assets/logo_24x24.png",
+      "default_popup": "html/popup.html",
+      "default_title": "__MSG_actionTitle__"
+   },
+   "default_locale": "zh_CN",
+   "description": "__MSG_extDescription__",
+   "homepage_url": "https://immmmm.com",
+   "icons": {
+      "128": "assets/logo.png",
+      "16": "assets/logo.png",
+      "48": "assets/logo.png"
+   },
+   "manifest_version": 2,
+   "name": "__MSG_extName__",
+   "permissions": [ "storage", "webRequest", "contextMenus", "http://*/*", "https://*/*" ],
+   // 新增命令
+   "commands": {
+    "_execute_browser_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+D",
+        "mac": "MacCtrl+Shift+D"
+      },
+      "description": "Opens popup.html"
+    }
+   },
+   "version": "2022.10.09"
+}
