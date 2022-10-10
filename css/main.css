@@ -12,12 +12,14 @@ button, input, textarea {
 input:focus::-moz-placeholder ,.common-editor-inputer:focus::-moz-placeholder {
     color: #d3d3d3
 }
-
+input::placeholder ,.common-editor-inputer::placeholder {
+    color: #999;
+}
 input:focus::placeholder ,.common-editor-inputer:focus::placeholder {
     color: #d3d3d3
 }
 .body{
-    min-width:350px;
+    min-width:460px;
     background-color: #f6f5f4;
     padding:0 1rem 1rem;
     font-family: eafont,PingFang SC,Hiragino Sans GB,Microsoft YaHei,STHeiti,WenQuanYi Micro Hei,Helvetica,Arial,sans-serif;
@@ -37,7 +39,7 @@ input:focus::placeholder ,.common-editor-inputer:focus::placeholder {
     border-radius: .5rem;
     background-color: rgb(255,255,255);
     margin-top:0.8rem;
-    padding: 0.8rem;
+    padding: 0.6rem;
     transition-property: all;
     transition-timing-function: cubic-bezier(.4,0,.2,1);
     transition-duration: .15s;
@@ -45,8 +47,6 @@ input:focus::placeholder ,.common-editor-inputer:focus::placeholder {
 .btns-container{text-align:right;}
 .common-editor-inputer,input.inputer{
     font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;
-    margin-top: .25rem;
-    margin-bottom: .25rem;
     height: 100%;
     width: 100%;
     resize: none;
@@ -56,22 +56,29 @@ input:focus::placeholder ,.common-editor-inputer:focus::placeholder {
     background-color: transparent;
     font-size: 1rem;
     min-height: 40px;
-    max-height: 300px;
+    max-height: 400px;
     scrollbar-width: none;
+    line-height: 1.5rem;
 }
 input.inputer{border-bottom: 1px solid #ccc;width:75%;}
 
 #saveKey{margin:0;flex:1;}
+
 .common-tools-wrapper {
     position: relative;
     display: flex;
     width: 100%;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
     margin-top: 1rem;
+    justify-content: space-between;
 }
-
+.common-tools-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
 .confirm-btn {
     display: inline-flex;
     cursor: pointer;
@@ -99,9 +106,9 @@ input.inputer{border-bottom: 1px solid #ccc;width:75%;}
 }
 
 svg.icon{width:24px;height:24px;}
-
-#tags svg{opacity: 0.6;}
-#tags:hover svg{opacity: 1;cursor: pointer;}
+#tags,#getlink{margin-right: .5rem;}
+#tags svg,#getlink svg{opacity: 0.6;}
+#tags:hover svg,#getlink:hover svg{opacity: 1;cursor: pointer;}
 
 #taglist{display: none;}
 .tag-list {
