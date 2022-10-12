@@ -9,10 +9,6 @@
    },
    "extName": {
       "description": "扩展名称",
-      "message": "Memos-lmm"
-   },
-   "selectionMenu": {
-      "description": "菜单(选中)",
-      "message": "发送选中内容"
+      "message": "Memos-bber"
    }
 }

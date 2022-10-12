@@ -48,7 +48,7 @@ $('#tags').click(function () {
           tagDom += '<span class="item-container">#'+obj+'</span>'
         });
         //console.log(tagDom)
-        $("#taglist").html(tagDom).slideToggle()
+        $("#taglist").html(tagDom).slideToggle(500)
       });
     } else {
       $.message({
@@ -62,15 +62,16 @@ $(document).on("click",".item-container",function () {
   var tagHtml = $(this).text()+" "
   add(tagHtml);
 })
+
 $('#getlink').click(function () {
-  chrome.tabs.getSelected(null, function (tab) {
+  chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
     var linkHtml = " ["+tab.title+"]("+tab.url+") "
     if(tab.url){
       add(linkHtml);
     }else{
       $.message({message: '获取失败 😂'})
     }
-  });
+  })
 })
 
 function add(str) {

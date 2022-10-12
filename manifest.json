@@ -1,10 +1,10 @@
 {
-   "background": {
-      "scripts": [ "js/background.js" ]
-   },
-   "browser_action": {
+   "manifest_version": 3,
+   "name": "__MSG_extName__",
+   "version": "2022.10.12",
+   "action": {
+      "default_popup": "popup.html",
       "default_icon": "assets/logo_24x24.png",
-      "default_popup": "html/popup.html",
       "default_title": "__MSG_actionTitle__"
    },
    "default_locale": "zh_CN",
@@ -15,18 +15,15 @@
       "16": "assets/logo.png",
       "48": "assets/logo.png"
    },
-   "manifest_version": 2,
-   "name": "__MSG_extName__",
-   "permissions": [ "storage", "webRequest", "contextMenus", "http://*/*", "https://*/*" ],
-   // 新增命令
+   "permissions": ["tabs","storage","activeTab"],
+   "host_permissions": ["http://*/*", "https://*/*"],
    "commands": {
     "_execute_browser_action": {
       "suggested_key": {
-        "default": "Ctrl+Shift+D",
-        "mac": "MacCtrl+Shift+D"
+        "default": "Ctrl+Shift+F",
+        "mac": "MacCtrl+Shift+F"
       },
       "description": "Opens popup.html"
     }
-   },
-   "version": "2022.10.10"
+   }
 }
