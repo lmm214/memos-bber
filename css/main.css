@@ -107,11 +107,13 @@ input.inputer{border-bottom: 1px solid #ccc;width:75%;}
 
 svg.icon{width:24px;height:24px;}
 #tags,#getlink{margin-right: .5rem;}
-#tags svg,#getlink svg{opacity: 0.6;}
-#tags:hover svg,#getlink:hover svg{opacity: 1;cursor: pointer;}
+#tags svg,#getlink svg,#locked svg,#unlock svg{opacity: 0.6;}
+#tags:hover svg,#getlink:hover svg,#locked:hover svg,#unlock:hover svg{opacity: 1;cursor: pointer;}
 
-#taglist{display: none;}
-.tag-list {
+#locked{display: none;}
+
+#taglist,#visibilitylist{display: none;}
+.tag-list,.visibility-list {
     margin-top: .5rem;
     max-height: 13rem;
     flex-direction: column;
@@ -119,7 +121,7 @@ svg.icon{width:24px;height:24px;}
     justify-content: flex-start;
     font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;
 }
-.tag-list>.item-container {
+.tag-list>.item-container,.visibility-list >.item-lock {
     display: inline-block;
     background-color: #666;
     cursor: pointer;
@@ -131,6 +133,9 @@ svg.icon{width:24px;height:24px;}
     margin:0 6px 6px 0;
 }
 
+.visibility-list .item-lock.lock-now{
+    background-color:rgb(22,163,74);
+}
 #blog_info_edit{
     position: absolute;
     right: 1rem;
@@ -142,6 +147,13 @@ svg.icon{width:24px;height:24px;}
     align-items: center;
     justify-content: center;
 }
+
+
+
+
+
+
+
 
 .tip{
     margin-left: 36%;

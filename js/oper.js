@@ -37,7 +37,6 @@ $('#saveKey').click(function () {
 })
 
 $('#tags').click(function () {
-  //add("要出入的文本");
   get_info(function (info) {
     if (info.status) {
       var tagUrl = info.apiUrl.replace(/api\/memo/,'api/tag')
@@ -56,6 +55,32 @@ $('#tags').click(function () {
       })
     }
   })
+})
+$('#unlock,#locked').click(function () {
+  get_info(function (info) {
+    var nowlock = info.memo_lock
+    var lockDom = '<span class="item-lock'+ (nowlock == 'PUBLIC' ? ' lock-now' : '')+'" data-type="PUBLIC">公开</span><span class="item-lock'+ (nowlock == 'PRIVATE' ? ' lock-now' : '')+'" data-type="PRIVATE">仅自己</span><span class="item-lock'+ (nowlock == 'PROTECTED' ? ' lock-now' : '')+'" data-type="PROTECTED">登录可见</span>'
+    $("#visibilitylist").html(lockDom).slideToggle(500)
+  })
+})
+$(document).on("click",".item-lock",function () {
+    _this = $(this)[0].dataset.type
+    if(_this !== "PUBLIC"){
+      $('#locked').show()
+      $('#unlock').hide()
+    }else{
+      $('#locked').hide()
+      $('#unlock').show()
+    }
+    chrome.storage.sync.set(
+      {memo_lock: _this},
+      function () {
+        $.message({
+          message: '设置成功，当前为： '+ _this
+        })
+        $('#visibilitylist').hide()
+      }
+    )
 })
 
 $(document).on("click",".item-container",function () {
@@ -96,6 +121,7 @@ function get_info(callback) {
   chrome.storage.sync.get(
     {
       apiUrl: '',
+      memo_lock: 'Public',
       open_action: '',
       open_content: ''
     },
@@ -109,6 +135,7 @@ function get_info(callback) {
       }
       returnObject.status = flag
       returnObject.apiUrl = items.apiUrl
+      returnObject.memo_lock = items.memo_lock
       returnObject.open_content = items.open_content
       returnObject.open_action = items.open_action
       if (callback) callback(returnObject)
@@ -129,13 +156,17 @@ function sendText() {
   get_info(function (info) {
     if (info.status) {
       //信息满足了
+      console.log(info.memo_lock)
       $.message({message: '发送中～～'})
       //$("#content_submit_text").attr('disabled','disabled');
       let content = $('#content').val()
       $.ajax({
         url:info.apiUrl,
         type:"POST",
-        data:JSON.stringify({'content': content}),
+        data:JSON.stringify({
+          'content': content,
+          'visibility': info.memo_lock
+        }),
         contentType:"application/json;",
         dataType:"json",
         success: function(result){

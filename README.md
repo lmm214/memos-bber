@@ -1,3 +1,7 @@
+## 更新日志
+
+2022.10.24 添加 visiblity 发送设置。
+
 ## 说明
 
 Chrome 应用商店：<https://chrome.google.com/webstore/detail/memos-bber/cbhjebjfccgchgbmfbobjmebjjckgofe/>
