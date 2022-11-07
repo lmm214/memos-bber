@@ -68,10 +68,7 @@ function initDrag() {
     ev.preventDefault()
     var files = ev.dataTransfer.files || ev.target.files
     for (var i = 0; i < files.length; i++) {
-      if (files[i].type.indexOf('image') >= 0) {
         file = files[i]
-        break
-      }
     }
     uploadImage(file)
   }
@@ -94,6 +91,7 @@ function uploadImage(data) {
     message: '上传图片中……',
     autoClose: false
   })
+  console.log(data)
   //根据data判断是图片地址还是base64加密的数据
   get_info(function (info) {
     const formData = new FormData()
