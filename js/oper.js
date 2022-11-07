@@ -8,7 +8,14 @@ get_info(function (info) {
     $('#blog_info').hide()
   }
   $('#apiUrl').val(info.apiUrl)
-  $('#content').val(info.open_content)
+  if (info.open_action === 'upload_image') {
+    //打开的时候就是上传图片
+    console.log(info.open_content)
+    uploadImage(info.open_content)
+  } else {
+    $('#content').val(info.open_content)
+  }
+
   //从localstorage 里面读取数据
   setTimeout(get_info, 1)
 })
@@ -20,6 +27,129 @@ $('#content').blur(function () {
     function () {}
   )
 })
+
+//监听拖拽事件，实现拖拽到窗口上传图片
+initDrag()
+
+//监听复制粘贴事件，实现粘贴上传图片
+document.addEventListener('paste', function (e) {
+  let photo = null
+  if (e.clipboardData.files[0]) {
+    photo = e.clipboardData.files[0]
+  } else if (e.clipboardData.items[0] && e.clipboardData.items[0].getAsFile()) {
+    photo = e.clipboardData.items[0].getAsFile()
+  }
+
+  if (photo != null) {
+    uploadImage(photo)
+  }
+})
+
+function initDrag() {
+  var file = null
+  var obj = $('#content')[0]
+  obj.ondragenter = function (ev) {
+    if (ev.target.className === 'common-editor-inputer') {
+      $.message({
+        message: '拖拽到窗口上传该图片',
+        autoClose: false
+      })
+      $('body').css('opacity', 0.3)
+    }
+
+    ev.dataTransfer.dropEffect = 'copy'
+  }
+  obj.ondragover = function (ev) {
+    ev.preventDefault() //防止默认事件拖入图片 放开的时候打开图片了
+    ev.dataTransfer.dropEffect = 'copy'
+  }
+  obj.ondrop = function (ev) {
+    $('body').css('opacity', 1)
+    ev.preventDefault()
+    var files = ev.dataTransfer.files || ev.target.files
+    for (var i = 0; i < files.length; i++) {
+      if (files[i].type.indexOf('image') >= 0) {
+        file = files[i]
+        break
+      }
+    }
+    uploadImage(file)
+  }
+  obj.ondragleave = function (ev) {
+    ev.preventDefault()
+    if (ev.target.className === 'common-editor-inputer') {
+      console.log('ondragleave' + ev.target.tagName)
+      $.message({
+        message: '取消上传'
+      })
+      $('body').css('opacity', 1)
+    }
+  }
+}
+
+let relistNow = []
+function uploadImage(data) {
+  //显示上传中的动画……
+  $.message({
+    message: '上传图片中……',
+    autoClose: false
+  })
+  //根据data判断是图片地址还是base64加密的数据
+  get_info(function (info) {
+    const formData = new FormData()
+    if (info.status) {
+      formData.append('file', data)
+      $.ajax({
+        url: info.apiUrl.replace(/api\/memo/,'api/resource'),
+        data: formData,
+        type: 'post',
+        cache: false,
+        processData: false,
+        contentType: false,
+        dataType: 'json',
+
+        success: function (result) {
+          console.log(result)
+          if (result.data.id) {
+            //获取到图片
+            relistNow.push(result.data.id)
+            chrome.storage.sync.set(
+              {
+                open_action: '', 
+                open_content: '',
+                resourceIdList: relistNow
+              },
+              function () {
+                $.message({
+                  message: '上传成功'
+                })
+              }
+            )
+          } else {
+            //发送失败
+            //清空open_action（打开时候进行的操作）,同时清空open_content
+            chrome.storage.sync.set(
+              {
+                open_action: '', 
+                open_content: '',
+                resourceIdList: []
+              },
+              function () {
+                $.message({
+                  message: '上传图片失败'
+                })
+              }
+            )
+          }
+        }
+      })
+    } else {
+      $.message({
+        message: '所需要信息不足，请先填写好绑定信息'
+      })
+    }
+  })
+}
 
 $('#saveKey').click(function () {
   // 保存数据
@@ -56,6 +186,7 @@ $('#tags').click(function () {
     }
   })
 })
+
 $('#unlock,#locked').click(function () {
   get_info(function (info) {
     var nowlock = info.memo_lock
@@ -123,7 +254,9 @@ function get_info(callback) {
       apiUrl: '',
       memo_lock: 'Public',
       open_action: '',
-      open_content: ''
+      open_content: '',
+      resourceIdList: []
+      
     },
     function (items) {
       var flag = false
@@ -138,6 +271,8 @@ function get_info(callback) {
       returnObject.memo_lock = items.memo_lock
       returnObject.open_content = items.open_content
       returnObject.open_action = items.open_action
+      returnObject.resourceIdList = items.resourceIdList
+
       if (callback) callback(returnObject)
     }
   )
@@ -152,11 +287,16 @@ $('#content_submit_text').click(function () {
     $.message({message: '写点什么，再记呗？'})
   }
 })
+
+let lockNow = 'Public'
 function sendText() {
   get_info(function (info) {
     if (info.status) {
       //信息满足了
       console.log(info.memo_lock)
+      if(info.memo_lock){
+        lockNow = info.memo_lock
+      }
       $.message({message: '发送中～～'})
       //$("#content_submit_text").attr('disabled','disabled');
       let content = $('#content').val()
@@ -165,14 +305,16 @@ function sendText() {
         type:"POST",
         data:JSON.stringify({
           'content': content,
-          'visibility': info.memo_lock
+          'visibility': lockNow,
+          'resourceIdList': info.resourceIdList,
         }),
         contentType:"application/json;",
         dataType:"json",
         success: function(result){
               //发送成功
+              console.log(result)
               chrome.storage.sync.set(
-                { open_action: '', open_content: '' },
+                { open_action: '', open_content: '',resourceIdList:''},
                 function () {
                   $.message({
                     message: '发送成功！😊'
@@ -183,7 +325,7 @@ function sendText() {
           )
       },error:function(err){//清空open_action（打开时候进行的操作）,同时清空open_content
               chrome.storage.sync.set(
-                { open_action: '', open_content: '' },
+                { open_action: '', open_content: '',resourceIdList:'' },
                 function () {
                   $.message({
                     message: '网络问题，发送失败！😭'
