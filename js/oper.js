@@ -286,14 +286,16 @@ $('#content_submit_text').click(function () {
   }
 })
 
-let lockNow = 'Public'
+let lockNow = '';
 function sendText() {
   get_info(function (info) {
     if (info.status) {
       //信息满足了
       console.log(info.memo_lock)
       if(info.memo_lock){
-        lockNow = info.memo_lock
+        lockNow == info.memo_lock
+      }else{
+        lockNow = 'Public'
       }
       $.message({message: '发送中～～'})
       //$("#content_submit_text").attr('disabled','disabled');
