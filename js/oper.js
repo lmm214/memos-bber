@@ -7,6 +7,14 @@ get_info(function (info) {
     //已经有绑定信息了，折叠
     $('#blog_info').hide()
   }
+  var memoNow = info.memo_lock
+  if(memoNow !== "PUBLIC"){
+    $('#locked').show()
+    $('#unlock').hide()
+  }else{
+    $('#locked').hide()
+    $('#unlock').show()
+  }
   $('#apiUrl').val(info.apiUrl)
   if (info.open_action === 'upload_image') {
     //打开的时候就是上传图片
@@ -286,17 +294,11 @@ $('#content_submit_text').click(function () {
   }
 })
 
-let lockNow = '';
 function sendText() {
   get_info(function (info) {
     if (info.status) {
       //信息满足了
       console.log(info.memo_lock)
-      if(info.memo_lock){
-        lockNow == info.memo_lock
-      }else{
-        lockNow = 'Public'
-      }
       $.message({message: '发送中～～'})
       //$("#content_submit_text").attr('disabled','disabled');
       let content = $('#content').val()
@@ -305,8 +307,8 @@ function sendText() {
         type:"POST",
         data:JSON.stringify({
           'content': content,
-          'visibility': lockNow,
-          'resourceIdList': info.resourceIdList,
+          'visibility': info.memo_lock || '',
+          'resourceIdList': info.resourceIdList || [],
         }),
         contentType:"application/json;",
         dataType:"json",
