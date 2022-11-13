@@ -225,6 +225,11 @@ $(document).on("click",".item-container",function () {
   add(tagHtml);
 })
 
+$('#newtodo').click(function () {
+  var tagHtml = "\n- [ ] "
+  add(tagHtml);
+})
+
 $('#getlink').click(function () {
   chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
     var linkHtml = " ["+tab.title+"]("+tab.url+") "
@@ -330,7 +335,7 @@ function sendText() {
                 { open_action: '', open_content: '',resourceIdList:'' },
                 function () {
                   $.message({
-                    message: '网络问题，发送失败！😭'
+                    message: '网络问题，发送失败！😭（记得点下小锁图标，设置一下状态哦）'
                   })
                 }
               )},

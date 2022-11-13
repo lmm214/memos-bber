@@ -15,7 +15,12 @@
       "16": "assets/logo.png",
       "48": "assets/logo.png"
    },
-   "permissions": ["tabs","storage","activeTab"],
+   "permissions": [
+      "tabs",
+      "storage",
+      "activeTab",
+      "contextMenus"
+   ],
    "host_permissions": ["http://*/*", "https://*/*"],
    "commands": {
     "_execute_browser_action": {
