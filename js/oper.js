@@ -241,6 +241,20 @@ $('#getlink').click(function () {
   })
 })
 
+$('#upres').click(async function () {
+  $('#inFile').click()
+})
+
+$('#inFile').on('change', function(data){
+  var fileVal = $('#inFile').val();
+  var file = null
+  if(fileVal == '') {
+    return;
+  }
+  file= this.files[0];
+  uploadImage(file)
+});
+
 function add(str) {
   var tc = document.getElementById("content");
   var tclen = tc.value.length;

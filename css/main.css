@@ -105,16 +105,13 @@ input.inputer{border-bottom: 1px solid #ccc;width:75%;}
     cursor: not-allowed;
 }
 
-svg.icon{width:24px;height:24px;}
+.common-tools-container .mr-5{margin-right: .5rem;}
+.common-tools-container svg.icon,#blog_info_edit svg.icon{width:24px;height:24px;opacity: 0.6;cursor: pointer;}
 #newtodo svg.icon{padding-top: 2px;}
 #tags svg.icon{padding: 2px;width:23px;height:23px;}
-#tags,#getlink,#newtodo{margin-right: .5rem;}
-#tags svg,#getlink svg,#locked svg,#unlock svg,#newtodo svg{opacity: 0.6;}
-#tags:hover svg,#getlink:hover svg,#locked:hover svg,#unlock:hover svg,#newtodo:hover svg{opacity: 1;cursor: pointer;}
+#tags:hover svg,#getlink:hover svg,#locked:hover svg,#unlock:hover svg,#newtodo:hover svg,#upres:hover svg{opacity: 1;}
 
-#locked{display: none;}
-
-#taglist,#visibilitylist{display: none;}
+#locked,#taglist,#visibilitylist{display: none;}
 .tag-list,.visibility-list {
     margin-top: .5rem;
     max-height: 13rem;
