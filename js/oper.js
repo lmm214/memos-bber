@@ -8,6 +8,11 @@ get_info(function (info) {
     $('#blog_info').hide()
   }
   var memoNow = info.memo_lock
+  if(memoNow == ''){
+    chrome.storage.sync.set(
+      { memo_lock: 'PUBLIC'}
+    )
+  }
   if(memoNow !== "PUBLIC"){
     $('#locked').show()
     $('#unlock').hide()
@@ -31,8 +36,7 @@ get_info(function (info) {
 //监听输入结束，保存未发送内容到本地
 $('#content').blur(function () {
   chrome.storage.sync.set(
-    { open_action: 'save_text', open_content: $('#content').val() },
-    function () {}
+    { open_action: 'save_text', open_content: $('#content').val() }
   )
 })
 
@@ -281,7 +285,6 @@ function get_info(callback) {
       open_action: '',
       open_content: '',
       resourceIdList: []
-      
     },
     function (items) {
       var flag = false
@@ -317,7 +320,6 @@ function sendText() {
   get_info(function (info) {
     if (info.status) {
       //信息满足了
-      console.log(info.memo_lock)
       $.message({message: '发送中～～'})
       //$("#content_submit_text").attr('disabled','disabled');
       let content = $('#content').val()
