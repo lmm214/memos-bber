@@ -103,7 +103,6 @@ function uploadImage(data) {
     message: '上传图片中……',
     autoClose: false
   })
-  console.log(data)
   //根据data判断是图片地址还是base64加密的数据
   get_info(function (info) {
     const formData = new FormData()
@@ -204,6 +203,49 @@ $('#unlock,#locked').click(function () {
     $("#visibilitylist").html(lockDom).slideToggle(500)
   })
 })
+
+
+$('#random').click(function () {
+  dayjs.extend(window.dayjs_plugin_relativeTime)
+  dayjs.locale('zh-cn')
+  get_info(function (info) {
+    if (info.status) {
+      $("#randomlist").html('').hide()
+      var randomUrl1 = info.apiUrl.replace(/api\/memo/,'api/memo/amount')
+      var randomDom = ""
+      $.get(randomUrl1,function(data,status){
+        let randomNum = Math.floor(Math.random() * (data.data)) + 1;
+        var randomUrl2 = info.apiUrl+'&rowStatus=NORMAL&limit=1&offset='+randomNum
+        $.get(randomUrl2,function(data){
+          var randomData = data.data[0]
+          randomDom += '<div class="random-item"><div class="random-time"><span id="random-link" data-id="'+randomData.id+'">…</span>'+dayjs(new Date(randomData.createdTs * 1000).toLocaleString()).fromNow()+'</div><div class="random-content">'+randomData.content.replace(/!\[.*?\]\((.*?)\)/g,' <img class="random-image" src="$1"/> ').replace(/\[(.*?)\]\((.*?)\)/g,' <a href="$2" target="_blank">$1</a> ')+'</div></div>'
+          if(randomData.resourceList && randomData.resourceList.length > 0){
+            var resourceList = randomData.resourceList;
+            for(var j=0;j < resourceList.length;j++){
+              var restype = resourceList[j].type.slice(0,5);
+              if(restype == 'image'){
+                randomDom += '<img class="random-image" src="'+info.apiUrl.replace(/api\/memo.*/,'')+'o/r/'+resourceList[j].id+'/'+resourceList[j].filename+'"/>'
+              }
+            }
+          }
+          $("#randomlist").html(randomDom).slideDown(500);
+        });
+      });
+    } else {
+      $.message({
+        message: '请先填写好 API 链接'
+      })
+    }
+  })
+})
+
+$(document).on("click","#random-link",function () {
+  var memoId = this.getAttribute('data-id')
+  get_info(function (info) {
+    chrome.tabs.create({url:info.apiUrl.replace(/api\/memo.*/,'')+"m/"+memoId})
+  })
+})
+
 $(document).on("click",".item-lock",function () {
     _this = $(this)[0].dataset.type
     if(_this !== "PUBLIC"){
