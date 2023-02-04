@@ -211,26 +211,25 @@ $('#random').click(function () {
   get_info(function (info) {
     if (info.status) {
       $("#randomlist").html('').hide()
-      var randomUrl1 = info.apiUrl.replace(/api\/memo/,'api/memo/amount')
-      var randomDom = ""
-      $.get(randomUrl1,function(data,status){
-        let randomNum = Math.floor(Math.random() * (data.data)) + 1;
-        var randomUrl2 = info.apiUrl+'&rowStatus=NORMAL&limit=1&offset='+randomNum
-        $.get(randomUrl2,function(data){
-          var randomData = data.data[0]
-          randomDom += '<div class="random-item"><div class="random-time"><span id="random-link" data-id="'+randomData.id+'">…</span>'+dayjs(new Date(randomData.createdTs * 1000).toLocaleString()).fromNow()+'</div><div class="random-content">'+randomData.content.replace(/!\[.*?\]\((.*?)\)/g,' <img class="random-image" src="$1"/> ').replace(/\[(.*?)\]\((.*?)\)/g,' <a href="$2" target="_blank">$1</a> ')+'</div></div>'
-          if(randomData.resourceList && randomData.resourceList.length > 0){
-            var resourceList = randomData.resourceList;
-            for(var j=0;j < resourceList.length;j++){
-              var restype = resourceList[j].type.slice(0,5);
-              if(restype == 'image'){
-                randomDom += '<img class="random-image" src="'+info.apiUrl.replace(/api\/memo.*/,'')+'o/r/'+resourceList[j].id+'/'+resourceList[j].filename+'"/>'
-              }
-            }
-          }
-          $("#randomlist").html(randomDom).slideDown(500);
+      var nowTag = $("textarea[name=text]").val().replace(/#([^\s#]+)/,'$1') ;
+      if( $("#taglist").is(':visible') && nowTag){
+        var tagUrl = info.apiUrl.replace(/api\/memo.*/,'api/memo/all?tag='+nowTag)
+        $.get(tagUrl,function(data){
+          let randomNum = Math.floor(Math.random() * (data.data.length));
+          var randomData = data.data[randomNum]
+          randDom(randomData)
+        })
+      }else{
+        var randomUrl1 = info.apiUrl.replace(/api\/memo/,'api/memo/amount')
+        $.get(randomUrl1,function(data,status){
+          let randomNum = Math.floor(Math.random() * (data.data)) + 1;
+          var randomUrl2 = info.apiUrl+'&rowStatus=NORMAL&limit=1&offset='+randomNum
+          $.get(randomUrl2,function(data){
+            var randomData = data.data[0]
+            randDom(randomData)
+          });
         });
-      });
+      }
     } else {
       $.message({
         message: '请先填写好 API 链接'
@@ -238,6 +237,22 @@ $('#random').click(function () {
     }
   })
 })
+
+function randDom(randomData){
+  get_info(function (info) {
+  var randomDom = '<div class="random-item"><div class="random-time"><span id="random-link" data-id="'+randomData.id+'">…</span>'+dayjs(new Date(randomData.createdTs * 1000).toLocaleString()).fromNow()+'</div><div class="random-content">'+randomData.content.replace(/!\[.*?\]\((.*?)\)/g,' <img class="random-image" src="$1"/> ').replace(/\[(.*?)\]\((.*?)\)/g,' <a href="$2" target="_blank">$1</a> ')+'</div></div>'
+  if(randomData.resourceList && randomData.resourceList.length > 0){
+    var resourceList = randomData.resourceList;
+    for(var j=0;j < resourceList.length;j++){
+      var restype = resourceList[j].type.slice(0,5);
+      if(restype == 'image'){
+        randomDom += '<img class="random-image" src="'+info.apiUrl.replace(/api\/memo.*/,'')+'o/r/'+resourceList[j].id+'/'+resourceList[j].filename+'"/>'
+      }
+    }
+  }
+  $("#randomlist").html(randomDom).slideDown(500);
+  })
+}
 
 $(document).on("click","#random-link",function () {
   var memoId = this.getAttribute('data-id')
