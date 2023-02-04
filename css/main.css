@@ -52,7 +52,12 @@ input:focus::placeholder ,.common-editor-inputer:focus::placeholder {
 .random-time{font-size:13px;margin-bottom:6px;color: #999;font-style:italic;}
 #random-link{float: right;margin-top: -5px;cursor: pointer;}
 .random-image{width:180px;height:180px;max-width:100%;object-fit: cover;border-radius: .25rem;margin:5px 5px 5px 0;}
-
+.random-content{width:100%;
+    max-width:100%;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    overflow-wrap: anywhere;
+    word-break: normal;}
 .btns-container{text-align:right;}
 .common-editor-inputer,input.inputer{
     font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;
