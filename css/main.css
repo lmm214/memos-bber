@@ -28,13 +28,14 @@ input:focus::placeholder ,.common-editor-inputer:focus::placeholder {
     line-height: 1.5;
     position: relative;
 }
+a{color: #555;}
 .title{
     font-size: 1.125rem;
     font-weight: 700;
     line-height: 2.5rem;
     color: rgb(55,65,81);
 }
-.memo-editor,#randomlist{
+.memo-editor,.random-item{
     border: 2px solid rgb(229,231,235);
     border-radius: .5rem;
     background-color: rgb(255,255,255);
@@ -44,7 +45,7 @@ input:focus::placeholder ,.common-editor-inputer:focus::placeholder {
     transition-timing-function: cubic-bezier(.4,0,.2,1);
     transition-duration: .15s;
 }
-#randomlist{
+.random-item{
     border: 1px solid rgb(229,231,235);
     color: #666;
     padding: 1rem;
@@ -124,7 +125,7 @@ input.inputer{border-bottom: 1px solid #ccc;width:75%;}
 #newtodo svg.icon{padding-top: 2px;}
 #tags svg.icon{padding: 2px;width:23px;height:23px;}
 #random svg.icon{padding:2px;width:19px;height:19px;}
-#tags:hover svg,#getlink:hover svg,#locked:hover svg,#unlock:hover svg,#newtodo:hover svg,#upres:hover svg,#random:hover svg{opacity: 1;}
+.common-tools-container svg.icon:hover{opacity: 1;}
 
 #locked,#taglist,#visibilitylis,#randomlist{display: none;}
 .tag-list,.visibility-list {

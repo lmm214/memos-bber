@@ -204,10 +204,49 @@ $('#unlock,#locked').click(function () {
   })
 })
 
+dayjs.extend(window.dayjs_plugin_relativeTime)
+dayjs.locale('zh-cn')
+$('#search').click(function () {
+  get_info(function (info) {
+  if (info.status) {
+    $("#randomlist").html('').hide()
+    var searchDom = ""
+    const pattern = $("textarea[name=text]").val()
+    if(pattern){
+      $.get( info.apiUrl ,function(data){
+        const options = {keys: ['content']};
+        const fuse = new Fuse(data.data, options);
+        var searchData = fuse.search(pattern)
+        for(var i=0;i < searchData.length;i++){
+          searchDom += '<div class="random-item"><div class="random-time"><span id="random-link" data-id="'+searchData[i].item.id+'">…</span>'+dayjs(new Date(searchData[i].item.createdTs)*1000).fromNow()+'</div><div class="random-content">'+searchData[i].item.content.replace(/!\[.*?\]\((.*?)\)/g,' <img class="random-image" src="$1"/> ').replace(/\[(.*?)\]\((.*?)\)/g,' <a href="$2" target="_blank">$1</a> ')+'</div>'
+          if(searchData[i].item.resourceList && searchData[i].item.resourceList.length > 0){
+            var resourceList = searchData[i].item.resourceList;
+            for(var j=0;j < resourceList.length;j++){
+              var restype = resourceList[j].type.slice(0,5);
+              if(restype == 'image'){
+                searchDom += '<img class="random-image" src="'+ info.apiUrl.replace(/api\/memo.*/,'')+'o/r/'+resourceList[j].id+'/'+resourceList[j].filename+'"/>'
+              }
+            }
+          }
+          searchDom += '</div>'
+        }
+        window.ViewImage && ViewImage.init('.random-image')
+        $("#randomlist").html(searchDom).slideDown(500);
+      });
+    }else{
+      $.message({
+        message: '想搜点啥？'
+      })
+    }
+  } else {
+    $.message({
+      message: '请先填写好 API 链接'
+    })
+  }
+})
+})
 
 $('#random').click(function () {
-  dayjs.extend(window.dayjs_plugin_relativeTime)
-  dayjs.locale('zh-cn')
   get_info(function (info) {
     if (info.status) {
       $("#randomlist").html('').hide()
@@ -240,7 +279,7 @@ $('#random').click(function () {
 
 function randDom(randomData){
   get_info(function (info) {
-  var randomDom = '<div class="random-item"><div class="random-time"><span id="random-link" data-id="'+randomData.id+'">…</span>'+dayjs(new Date(randomData.createdTs * 1000)).fromNow()+'</div><div class="random-content">'+randomData.content.replace(/!\[.*?\]\((.*?)\)/g,' <img class="random-image" src="$1"/> ').replace(/\[(.*?)\]\((.*?)\)/g,' <a href="$2" target="_blank">$1</a> ')+'</div></div>'
+  var randomDom = '<div class="random-item"><div class="random-time"><span id="random-link" data-id="'+randomData.id+'">…</span>'+dayjs(new Date(randomData.createdTs * 1000)).fromNow()+'</div><div class="random-content">'+randomData.content.replace(/!\[.*?\]\((.*?)\)/g,' <img class="random-image" src="$1"/> ').replace(/\[(.*?)\]\((.*?)\)/g,' <a href="$2" target="_blank">$1</a> ')+'</div>'
   if(randomData.resourceList && randomData.resourceList.length > 0){
     var resourceList = randomData.resourceList;
     for(var j=0;j < resourceList.length;j++){
@@ -250,6 +289,8 @@ function randDom(randomData){
       }
     }
   }
+  randomDom += '</div>'
+  window.ViewImage && ViewImage.init('.random-image')
   $("#randomlist").html(randomDom).slideDown(500);
   })
 }
