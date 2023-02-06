@@ -18,6 +18,7 @@ input::placeholder ,.common-editor-inputer::placeholder {
 input:focus::placeholder ,.common-editor-inputer:focus::placeholder {
     color: #d3d3d3
 }
+.title{cursor: pointer;}
 .body{
     min-width:460px;
     background-color: #f6f5f4;
@@ -51,7 +52,10 @@ a{color: #555;}
     padding: 1rem;
 }
 .random-time{font-size:13px;margin-bottom:6px;color: #999;font-style:italic;}
-#random-link{float: right;margin-top: -5px;cursor: pointer;}
+.random-time span{float: right;margin-top: -3px;cursor: pointer;}
+.random-time span svg.icon{width:15px;height:15px;padding:4px 6px 0;opacity: 0.6;margin-left:4px;}
+.random-time span svg.icon:hover{opacity: 1;}
+
 .random-image{width:180px;height:180px;max-width:100%;object-fit: cover;border-radius: .25rem;margin:5px 5px 5px 0;}
 .random-content{width:100%;
     max-width:100%;
