@@ -23,10 +23,9 @@ get_info(function (info) {
   $('#apiUrl').val(info.apiUrl)
   if (info.open_action === 'upload_image') {
     //打开的时候就是上传图片
-    console.log(info.open_content)
     uploadImage(info.open_content)
   } else {
-    $('#content').val(info.open_content)
+    $("textarea[name=text]").val(info.open_content)
   }
 
   //从localstorage 里面读取数据
@@ -34,9 +33,9 @@ get_info(function (info) {
 })
 
 //监听输入结束，保存未发送内容到本地
-$('#content').blur(function () {
+$("textarea[name=text]").blur(function () {
   chrome.storage.sync.set(
-    { open_action: 'save_text', open_content: $('#content').val() }
+    { open_action: 'save_text', open_content: $("textarea[name=text]").val() }
   )
 })
 
@@ -59,7 +58,7 @@ document.addEventListener('paste', function (e) {
 
 function initDrag() {
   var file = null
-  var obj = $('#content')[0]
+  var obj = $("textarea[name=text]")[0]
   obj.ondragenter = function (ev) {
     if (ev.target.className === 'common-editor-inputer') {
       $.message({
@@ -454,7 +453,7 @@ function get_info(callback) {
 
 //发送操作
 $('#content_submit_text').click(function () {
-  var contentVal = $('#content').val()
+  var contentVal = $("textarea[name=text]").val()
   if(contentVal){
     sendText()
   }else{
@@ -468,7 +467,7 @@ function sendText() {
       //信息满足了
       $.message({message: '发送中～～'})
       //$("#content_submit_text").attr('disabled','disabled');
-      let content = $('#content').val()
+      let content = $("textarea[name=text]").val()
       $.ajax({
         url:info.apiUrl,
         type:"POST",
@@ -489,7 +488,7 @@ function sendText() {
                     message: '发送成功！😊'
                   })
                   //$("#content_submit_text").removeAttr('disabled');
-                  $('#content').val('')
+                  $("textarea[name=text]").val('')
                 }
           )
       },error:function(err){//清空open_action（打开时候进行的操作）,同时清空open_content
