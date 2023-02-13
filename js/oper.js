@@ -39,6 +39,12 @@ $("textarea[name=text]").blur(function () {
   )
 })
 
+$("textarea[name=text]").on('keydown', function (ev) {
+  if (ev.code === 'Enter' && (ev.ctrlKey || ev.metaKey)) {
+    $('#content_submit_text').click()
+  }
+})
+
 //监听拖拽事件，实现拖拽到窗口上传图片
 initDrag()
 
