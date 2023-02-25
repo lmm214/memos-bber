@@ -181,8 +181,10 @@ $('#saveKey').click(function () {
   )
 })
 
-$('#getone').click(function () {
-  getOne()
+$('#opensite').click(function () {
+  get_info(function (info) {
+    chrome.tabs.create({url:info.apiUrl.replace(/api\/memo.*/,'')})
+  })
 })
 
 function getOne(){
