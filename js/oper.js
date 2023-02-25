@@ -12,13 +12,14 @@ get_info(function (info) {
     chrome.storage.sync.set(
       { memo_lock: 'PUBLIC'}
     )
+    $("#lock-now").text("所有人可见")
   }
-  if(memoNow !== "PUBLIC"){
-    $('#locked').show()
-    $('#unlock').hide()
-  }else{
-    $('#locked').hide()
-    $('#unlock').show()
+  if(memoNow == "PUBLIC"){
+    $("#lock-now").text("所有人可见")
+  }else if(memoNow == "PRIVATE"){
+    $("#lock-now").text("仅自己可见")
+  }else if(memoNow == "PROTECTED"){
+    $("#lock-now").text("登录用户可见")
   }
   $('#apiUrl').val(info.apiUrl)
   if (info.open_action === 'upload_image') {
@@ -37,6 +38,12 @@ $("textarea[name=text]").blur(function () {
   chrome.storage.sync.set(
     { open_action: 'save_text', open_content: $("textarea[name=text]").val() }
   )
+})
+
+$("textarea[name=text]").on('keydown', function (ev) {
+  if (ev.code === 'Enter' && (ev.ctrlKey || ev.metaKey)) {
+    $('#content_submit_text').click()
+  }
 })
 
 //监听拖拽事件，实现拖拽到窗口上传图片
@@ -216,12 +223,17 @@ $('#tags').click(function () {
   })
 })
 
-$('#unlock,#locked').click(function () {
-  get_info(function (info) {
-    var nowlock = info.memo_lock
-    var lockDom = '<span class="item-lock'+ (nowlock == 'PUBLIC' ? ' lock-now' : '')+'" data-type="PUBLIC">公开</span><span class="item-lock'+ (nowlock == 'PRIVATE' ? ' lock-now' : '')+'" data-type="PRIVATE">仅自己</span><span class="item-lock'+ (nowlock == 'PROTECTED' ? ' lock-now' : '')+'" data-type="PROTECTED">登录可见</span>'
-    $("#visibilitylist").html(lockDom).slideToggle(500)
-  })
+$('#lock').click(function () {
+  $("#lock-wrapper").toggleClass( "!hidden", 1000 );
+})
+
+$(document).on("click",".item-lock",function () {
+  $("#lock-wrapper").toggleClass( "!hidden", 1000 );
+  $("#lock-now").text($(this).text())
+    _this = $(this)[0].dataset.type;
+    chrome.storage.sync.set(
+      {memo_lock: _this}
+    )
 })
 
 dayjs.extend(window.dayjs_plugin_relativeTime)
@@ -372,26 +384,6 @@ get_info(function (info) {
           }
   })
 })
-})
-
-$(document).on("click",".item-lock",function () {
-    _this = $(this)[0].dataset.type
-    if(_this !== "PUBLIC"){
-      $('#locked').show()
-      $('#unlock').hide()
-    }else{
-      $('#locked').hide()
-      $('#unlock').show()
-    }
-    chrome.storage.sync.set(
-      {memo_lock: _this},
-      function () {
-        $.message({
-          message: '设置成功，当前为： '+ _this
-        })
-        $('#visibilitylist').hide()
-      }
-    )
 })
 
 $(document).on("click",".item-container",function () {
