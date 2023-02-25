@@ -243,8 +243,18 @@ $('#search').click(function () {
             var resourceList = searchData[i].item.resourceList;
             for(var j=0;j < resourceList.length;j++){
               var restype = resourceList[j].type.slice(0,5);
+              var resexlink = resourceList[j].externalLink
+              var resLink = ''
+              if(resexlink){
+                resLink = resexlink
+              }else{
+                resLink = info.apiUrl.replace(/api\/memo.*/,'')+'o/r/'+resourceList[j].id+'/'+resourceList[j].filename
+              }
               if(restype == 'image'){
-                searchDom += '<img class="random-image" src="'+ info.apiUrl.replace(/api\/memo.*/,'')+'o/r/'+resourceList[j].id+'/'+resourceList[j].filename+'"/>'
+                searchDom += '<img class="random-image" src="'+resLink+'"/>'
+              }
+              if(restype !== 'image'){
+                searchDom += '<a target="_blank" rel="noreferrer" href="'+resLink+'">'+resourceList[j].filename+'</a>'
               }
             }
           }
@@ -309,8 +319,18 @@ function randDom(randomData){
     var resourceList = randomData.resourceList;
     for(var j=0;j < resourceList.length;j++){
       var restype = resourceList[j].type.slice(0,5);
+      var resexlink = resourceList[j].externalLink
+      var resLink = ''
+      if(resexlink){
+        resLink = resexlink
+      }else{
+        resLink = info.apiUrl.replace(/api\/memo.*/,'')+'o/r/'+resourceList[j].id+'/'+resourceList[j].filename
+      }
       if(restype == 'image'){
-        randomDom += '<img class="random-image" src="'+info.apiUrl.replace(/api\/memo.*/,'')+'o/r/'+resourceList[j].id+'/'+resourceList[j].filename+'"/>'
+        randomDom += '<img class="random-image" src="'+resLink+'"/>'
+      }
+      if(restype !== 'image'){
+        randomDom += '<a target="_blank" rel="noreferrer" href="'+resLink+'">'+resourceList[j].filename+'</a>'
       }
     }
   }
