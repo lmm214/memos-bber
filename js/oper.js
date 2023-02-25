@@ -279,13 +279,18 @@ $('#random').click(function () {
           randDom(randomData)
         })
       }else{
-        var randomUrl1 = info.apiUrl.replace(/api\/memo/,'api/memo/amount')
-        $.get(randomUrl1,function(data,status){
-          let randomNum = Math.floor(Math.random() * (data.data)) + 1;
-          var randomUrl2 = info.apiUrl+'&rowStatus=NORMAL&limit=1&offset='+randomNum
-          $.get(randomUrl2,function(data){
-            var randomData = data.data[0]
-            randDom(randomData)
+        var randomUrl0 = info.apiUrl+'&rowStatus=NORMAL&limit=1'
+        $.get(randomUrl0,function(data){
+          var creatorId = data.data[0].creatorId
+          var randomUrl1 = info.apiUrl.replace(/api\/memo.*/,'api/memo/stats?creatorId=')+creatorId
+          $.get(randomUrl1,function(data){
+            console.log(data.data.length)
+            let randomNum = Math.floor(Math.random() * (data.data.length)) + 1;
+            var randomUrl2 = info.apiUrl+'&rowStatus=NORMAL&limit=1&offset='+randomNum
+            $.get(randomUrl2,function(data){
+              var randomData = data.data[0]
+              randDom(randomData)
+            });
           });
         });
       }

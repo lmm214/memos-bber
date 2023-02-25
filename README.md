@@ -1,5 +1,7 @@
 ## 更新日志
 
+2023.02.25 修复 v0.11.0 下随机按钮失效。（api amount 失效导致，换用 stats 获取总条数）
+
 ![iShot_2023-02-06_19 16 28](https://user-images.githubusercontent.com/1472390/216958098-1f4fab2a-e77c-41bd-8ba3-5786f42744d7.png)
 
 2023.02.07 新增发布后显示最新一条 Memo ，具体一条新增归档按钮。
