@@ -102,6 +102,20 @@ function initDrag() {
   }
 }
 
+function generateRandomString() {
+  const length = 16;
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-';
+  let result = '';
+
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * chars.length);
+    const randomChar = chars.charAt(randomIndex);
+    result += randomChar;
+  }
+
+  return result;
+}
+
 let relistNow = []
 function uploadImage(data) {
   //显示上传中的动画……
@@ -113,7 +127,10 @@ function uploadImage(data) {
   get_info(function (info) {
     const formData = new FormData()
     if (info.status) {
-      formData.append('file', data)
+      var file_ext = data.name.split('.').pop();
+      formData.append('file', data, {
+        filename: 'bber_' + generateRandomString() + '.' + file_ext,
+      })
       $.ajax({
         url: info.apiUrl.replace(/api\/memo/,'api/resource/blob'),
         data: formData,
