@@ -151,7 +151,8 @@ input.inputer{border-bottom: 1px solid #ccc;width:75%;}
     color: #fff;
     margin:0 6px 6px 0;
 }
-.tag-list .hidetag{padding:0;float:right;}
+.tag-list .hidetag{padding:0;float:right;background-color:#ddd;}
+.tag-list .hidetag:hover{background-color:#666;}
 .tag-hide{display: none;}
 .tag-hide input.inputer{width:40%;font-size:11px;}
 
