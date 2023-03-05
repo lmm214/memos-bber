@@ -140,7 +140,7 @@ input.inputer{border-bottom: 1px solid #ccc;width:75%;}
     justify-content: flex-start;
     font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;
 }
-.tag-list>.item-container,.visibility-list >.item-lock {
+.tag-list>.item-container,.visibility-list >.item-lock,.tag-list .hidetag{
     display: inline-block;
     background-color: #666;
     cursor: pointer;
@@ -151,6 +151,9 @@ input.inputer{border-bottom: 1px solid #ccc;width:75%;}
     color: #fff;
     margin:0 6px 6px 0;
 }
+.tag-list .hidetag{padding:0;float:right;}
+.tag-hide{display: none;}
+.tag-hide input.inputer{width:40%;font-size:11px;}
 
 .visibility-list .item-lock.lock-now{
     background-color:rgb(22,163,74);
@@ -166,13 +169,6 @@ input.inputer{border-bottom: 1px solid #ccc;width:75%;}
     align-items: center;
     justify-content: center;
 }
-
-
-
-
-
-
-
 
 .tip{
     margin-left: 36%;
