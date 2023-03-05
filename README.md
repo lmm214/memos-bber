@@ -8,6 +8,8 @@ Chrome 应用商店：<https://chrome.google.com/webstore/detail/memos-bber/cbhj
 
 ## 更新日志
 
+2023.03.05 新增指定标签“仅自己可见”或“所有人可见”。
+
 2023.02.26 更改 Memos 可见范围按钮样式。支持 Ctrl/Meta + Enter 记下。点击标题跳转主站。
 
 2023.02.25 修复 v0.11.0 下随机按钮失效。（api amount 失效导致，换用 stats 获取总条数）
