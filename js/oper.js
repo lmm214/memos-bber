@@ -1,3 +1,6 @@
+dayjs.extend(window.dayjs_plugin_relativeTime)
+dayjs.locale('zh-cn')
+
 function get_info(callback) {
   chrome.storage.sync.get(
     {
@@ -59,7 +62,6 @@ get_info(function (info) {
   } else {
     $("textarea[name=text]").val(info.open_content)
   }
-
   //从localstorage 里面读取数据
   setTimeout(get_info, 1)
 })
@@ -144,7 +146,11 @@ function uploadImage(data) {
   get_info(function (info) {
     const formData = new FormData()
     if (info.status) {
-      formData.append('file', data)
+      let old_name = data.name.split('.');
+      let file_ext = data.name.split('.').pop();
+      let now = dayjs().format('YYYYMMDDHHmm')
+      let new_name = old_name[0] + '_' + now + '.' + file_ext;
+      formData.append('file', data, new_name)
       $.ajax({
         url: info.apiUrl.replace(/api\/memo/,'api/resource/blob'),
         data: formData,
@@ -290,8 +296,6 @@ $(document).on("click",".item-lock",function () {
     )
 })
 
-dayjs.extend(window.dayjs_plugin_relativeTime)
-dayjs.locale('zh-cn')
 $('#search').click(function () {
   get_info(function (info) {
   if (info.status) {
