@@ -8,6 +8,8 @@ Chrome 应用商店：<https://chrome.google.com/webstore/detail/memos-bber/cbhj
 
 ## 更新日志
 
+2023.03.09 新增右键发送文本至 Memos 输入框。
+
 ![iShot_2023-03-05](https://user-images.githubusercontent.com/1472390/222957393-fc2e933e-b18f-4e69-a8c0-4609f84a0a90.png)
 
 2023.03.05 新增指定标签“仅自己可见”或“所有人可见”；图片上传文件名添加时间戳。
