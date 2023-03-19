@@ -6,7 +6,7 @@ Chrome 应用商店：<https://chrome.google.com/webstore/detail/memos-bber/cbhj
 
 ## 更新日志
 
-2023.03.19 打开插件时 focus 输入框；上传图片重命名精确的秒。
+2023.03.19 上传图片重命名精确的秒；打开插件时 focus 输入框（配合右键发送文本到扩展，设置快捷键打开扩展，按下 Ctrl+Enter 记下）。
 
 2023.03.10 修复发布后调用最新一条 Memos。
 
