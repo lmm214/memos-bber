@@ -66,6 +66,8 @@ get_info(function (info) {
   setTimeout(get_info, 1)
 })
 
+$("textarea[name=text]").focus()
+
 //监听输入结束，保存未发送内容到本地
 $("textarea[name=text]").blur(function () {
   chrome.storage.sync.set(
@@ -147,7 +149,7 @@ function uploadImage(data) {
     if (info.status) {
       let old_name = data.name.split('.');
       let file_ext = data.name.split('.').pop();
-      let now = dayjs().format('YYYYMMDDHHmm')
+      let now = dayjs().format('YYYYMMDDHHmmss')
       let new_name = old_name[0] + '_' + now + '.' + file_ext;
       formData.append('file', data, new_name)
       $.ajax({

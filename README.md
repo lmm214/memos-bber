@@ -2,11 +2,11 @@
 
 Chrome 应用商店：<https://chrome.google.com/webstore/detail/memos-bber/cbhjebjfccgchgbmfbobjmebjjckgofe/>
 
-一个通过浏览器插件发布 [Memos](https://usememos.com/) 的插件。
-
-基于 iSpeak-bber 修改，原作者为 [DreamyTZK](https://www.antmoe.com/)。
+一个通过浏览器插件发布 [Memos](https://usememos.com/) 的插件。基于 iSpeak-bber 修改，原作者为 [DreamyTZK](https://www.antmoe.com/)。
 
 ## 更新日志
+
+2023.03.19 打开插件时 focus 输入框；上传图片重命名精确的秒。
 
 2023.03.10 修复发布后调用最新一条 Memos。
 

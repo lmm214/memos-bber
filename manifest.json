@@ -1,7 +1,7 @@
 {
    "manifest_version": 3,
    "name": "__MSG_extName__",
-   "version": "2023.03.10",
+   "version": "2023.03.19",
    "action": {
       "default_popup": "popup.html",
       "default_icon": "assets/logo_24x24.png",
