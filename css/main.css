@@ -18,7 +18,7 @@ input::placeholder ,.common-editor-inputer::placeholder {
 input:focus::placeholder ,.common-editor-inputer:focus::placeholder {
     color: #d3d3d3
 }
-.title{cursor: pointer;}
+
 .body{
     min-width:460px;
     background-color: #f6f5f4;
@@ -31,6 +31,8 @@ input:focus::placeholder ,.common-editor-inputer:focus::placeholder {
 }
 a{color: #555;}
 .title{
+    width: 100px;
+    cursor: pointer;
     font-size: 1.125rem;
     font-weight: 700;
     line-height: 2.5rem;

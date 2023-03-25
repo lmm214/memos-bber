@@ -24,10 +24,10 @@
           type="text"
           value=""
           maxlength="245"
-          placeholder="请填入 Memos Open API 链接"
+          placeholder=""
           required
         />
-        <span id="saveKey" class="action-btn confirm-btn">保存</span>
+        <span id="saveKey" class="action-btn confirm-btn"></span>
     </div>
 
     <div class="memo-editor">
@@ -36,7 +36,7 @@
         rows="4"
         name="text"
         id="content"
-        placeholder="现在的想法是..."
+        placeholder=""
         required=""
       ></textarea>
     </div>
@@ -79,14 +79,14 @@
           <span id="lock-now" class="value-text"></span><span class="arrow-text"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon-img"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
         </div>
         <div id="lock-wrapper" class="items-wrapper !hidden">
-          <div class="item-lock" data-type="PRIVATE">仅自己可见</div>
-          <div class="item-lock" data-type="PROTECTED">登录用户可见</div>
-          <div class="item-lock" data-type="PUBLIC">所有人可见</div>
+          <div id="lockPrivate" class="item-lock" data-type="PRIVATE"></div>
+          <div id="lockProtected" class="item-lock" data-type="PROTECTED"></div>
+          <div id="lockPublic" class="item-lock" data-type="PUBLIC"></div>
         </div>
       </div>
     </div>
     <div class="btns-container" type="submit" name="submit" id="submit">
-      <button id="content_submit_text" class="action-btn confirm-btn">记下<img class="icon-img" src="../assets/logo_24x24.png"></button>
+      <button id="content_submit_text" class="action-btn confirm-btn"><img class="icon-img" src="../assets/logo_24x24.png"></button>
     </div>
   </div>
   <div class="tag-list" id="taglist"></div>
@@ -98,7 +98,7 @@
     type="text"
     value=""
     maxlength="50"
-    placeholder="默认“仅自己可见”标签名"
+    placeholder=""
   />
     <input
     id="showInput"
@@ -107,14 +107,16 @@
     type="text"
     value=""
     maxlength="50"
-    placeholder="默认“所有人可见”标签名"
+    placeholder=""
   />
-  <span id="saveTag" class="action-btn confirm-btn">保存</span>
+  <span id="saveTag" class="action-btn confirm-btn"></span>
   </div>
 
   <div class="" id="randomlist"></div>
 
   <input type="file" id="inFile" style="display:none;">
+
+  <script src="../js/i18n.js"></script>
   <script src="../js/jquery.min.js"></script>
   <script src="../js/message.js"></script>
   <script src="../js/dayjs.min.js"></script>

@@ -44,14 +44,14 @@ get_info(function (info) {
     chrome.storage.sync.set(
       { memo_lock: 'PUBLIC'}
     )
-    $("#lock-now").text("所有人可见")
+    $("#lock-now").text(chrome.i18n.getMessage("lockPublic"))
   }
   if(memoNow == "PUBLIC"){
-    $("#lock-now").text("所有人可见")
+    $("#lock-now").text(chrome.i18n.getMessage("lockPublic"))
   }else if(memoNow == "PRIVATE"){
-    $("#lock-now").text("仅自己可见")
+    $("#lock-now").text(chrome.i18n.getMessage("lockPrivate"))
   }else if(memoNow == "PROTECTED"){
-    $("#lock-now").text("登录用户可见")
+    $("#lock-now").text(chrome.i18n.getMessage("lockProtected"))
   }
   $('#apiUrl').val(info.apiUrl)
   $('#hideInput').val(info.hidetag)
@@ -104,16 +104,15 @@ function initDrag() {
   obj.ondragenter = function (ev) {
     if (ev.target.className === 'common-editor-inputer') {
       $.message({
-        message: '拖拽到窗口上传该图片',
+        message: chrome.i18n.getMessage("picDrag"),
         autoClose: false
       })
       $('body').css('opacity', 0.3)
     }
-
     ev.dataTransfer.dropEffect = 'copy'
   }
   obj.ondragover = function (ev) {
-    ev.preventDefault() //防止默认事件拖入图片 放开的时候打开图片了
+    ev.preventDefault()
     ev.dataTransfer.dropEffect = 'copy'
   }
   obj.ondrop = function (ev) {
@@ -129,7 +128,7 @@ function initDrag() {
     ev.preventDefault()
     if (ev.target.className === 'common-editor-inputer') {
       $.message({
-        message: '取消上传'
+        message: chrome.i18n.getMessage("picCancelDrag")
       })
       $('body').css('opacity', 1)
     }
@@ -138,9 +137,8 @@ function initDrag() {
 
 let relistNow = []
 function uploadImage(data) {
-  //显示上传中的动画……
   $.message({
-    message: '上传图片中……',
+    message: chrome.i18n.getMessage("picUploading"),
     autoClose: false
   })
   //根据data判断是图片地址还是base64加密的数据
@@ -172,13 +170,12 @@ function uploadImage(data) {
               },
               function () {
                 $.message({
-                  message: '上传成功'
+                  message: chrome.i18n.getMessage("picSuccess")
                 })
               }
             )
           } else {
-            //发送失败
-            //清空open_action（打开时候进行的操作）,同时清空open_content
+            //发送失败 清空open_action（打开时候进行的操作）,同时清空open_content
             chrome.storage.sync.set(
               {
                 open_action: '', 
@@ -187,7 +184,7 @@ function uploadImage(data) {
               },
               function () {
                 $.message({
-                  message: '上传图片失败'
+                  message: chrome.i18n.getMessage("picFailed")
                 })
               }
             )
@@ -196,21 +193,20 @@ function uploadImage(data) {
       })
     } else {
       $.message({
-        message: '所需要信息不足，请先填写好绑定信息'
+        message: chrome.i18n.getMessage("placeApiUrl")
       })
     }
   })
 }
 
 $('#saveKey').click(function () {
-  // 保存数据
   chrome.storage.sync.set(
     {
       apiUrl: $('#apiUrl').val()
     },
     function () {
       $.message({
-        message: '保存信息成功'
+        message: chrome.i18n.getMessage("saveSuccess")
       })
       $('#blog_info').hide()
     }
@@ -238,7 +234,7 @@ $('#tags').click(function () {
       });
     } else {
       $.message({
-        message: '请先填写好 API 链接'
+        message: chrome.i18n.getMessage("placeApiUrl")
       })
     }
   })
@@ -257,7 +253,7 @@ $('#saveTag').click(function () {
     },
     function () {
       $.message({
-        message: '保存信息成功'
+        message: chrome.i18n.getMessage("saveSuccess")
       })
       $('#taghide').hide()
     }
@@ -316,12 +312,12 @@ $('#search').click(function () {
       });
     }else{
       $.message({
-        message: '想搜点啥？'
+        message: chrome.i18n.getMessage("searchNow")
       })
     }
   } else {
     $.message({
-      message: '请先填写好 API 链接'
+      message: chrome.i18n.getMessage("placeApiUrl")
     })
   }
 })
@@ -356,7 +352,7 @@ $('#random').click(function () {
       }
     } else {
       $.message({
-        message: '请先填写好 API 链接'
+        message: chrome.i18n.getMessage("placeApiUrl")
       })
     }
   })
@@ -413,11 +409,11 @@ get_info(function (info) {
     success: function(result){
           $("#randomlist").html('').hide()
               $.message({
-                message: '归档成功！😊'
+                message: chrome.i18n.getMessage("archiveSuccess")
               })
   },error:function(err){//清空open_action（打开时候进行的操作）,同时清空open_content
               $.message({
-                message: '网络问题，归档失败！😭'
+                message: chrome.i18n.getMessage("archiveFailed")
               })
           }
   })
@@ -440,7 +436,9 @@ $('#getlink').click(function () {
     if(tab.url){
       add(linkHtml);
     }else{
-      $.message({message: '获取失败 😂'})
+      $.message({
+        message: chrome.i18n.getMessage("getTabFailed")
+      })
     }
   })
 })
@@ -482,7 +480,9 @@ $('#content_submit_text').click(function () {
   if(contentVal){
     sendText()
   }else{
-    $.message({message: '写点什么，再记呗？'})
+    $.message({
+      message: chrome.i18n.getMessage("placeContent")
+    })
   }
 })
 
@@ -496,7 +496,7 @@ function getOne(memosId){
         });
   } else {
     $.message({
-      message: '请先填写好 API 链接'
+      message: chrome.i18n.getMessage("placeApiUrl")
     })
   }
   })
@@ -505,7 +505,9 @@ function getOne(memosId){
 function sendText() {
   get_info(function (info) {
     if (info.status) {
-      $.message({message: '发送中～～'})
+      $.message({
+        message: chrome.i18n.getMessage("memoUploading")
+      })
       //$("#content_submit_text").attr('disabled','disabled');
       let content = $("textarea[name=text]").val()
       var hideTag = info.hidetag
@@ -536,7 +538,7 @@ function sendText() {
                 { open_action: '', open_content: '',resourceIdList:''},
                 function () {
                   $.message({
-                    message: '发送成功！😊'
+                    message: chrome.i18n.getMessage("memoSuccess")
                   })
                   //$("#content_submit_text").removeAttr('disabled');
                   $("textarea[name=text]").val('')
@@ -547,14 +549,14 @@ function sendText() {
                 { open_action: '', open_content: '',resourceIdList:'' },
                 function () {
                   $.message({
-                    message: '网络问题，发送失败！😭'
+                    message: chrome.i18n.getMessage("memoFailed")
                   })
                 }
               )},
       })
     } else {
       $.message({
-        message: '请先填写好 API 链接'
+        message: chrome.i18n.getMessage("placeApiUrl")
       })
     }
   })

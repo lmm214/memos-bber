@@ -1,0 +1,77 @@
+{
+   "extName": {
+      "message": "Memos"
+   },
+   "actionTitle": {
+      "message": "Send Memos"
+   },
+   "extDescription": {
+      "message": "memos: A lightweight, self-hosted memo hub."
+   },
+   "sendTo": {
+      "message": "SendTo Memos "
+   },
+   "saveBtn":{
+      "message": "Save"
+   },
+   "placeApiUrl":{
+      "message": "Memos Open API Link"
+   },
+   "placeContent":{
+      "message": "Any thoughts..."
+   },
+   "lockPrivate":{
+      "message": "Only visible to you"
+   },
+   "lockProtected":{
+      "message": "Visible to members"
+   },
+   "lockPublic":{
+      "message": "Everyone can see"
+   },
+   "submitBtn":{
+      "message": "Save"
+   },
+   "placeHideInput":{
+      "message": "Default ‘Only visible to you’ Tag name"
+   },
+   "placeShowInput":{
+      "message": "Default ‘Everyone can see’ Tag name"
+   },
+   "picDrag":{
+      "message": "Drag upload the image"
+   },
+   "picCancelDrag":{
+      "message": "Cancel upload"
+   },
+   "picUploading":{
+      "message": "Upload the picture..."
+   },
+   "picSuccess":{
+      "message": "Upload completed"
+   },
+   "picFailed":{
+      "message": "Uploading failed"
+   },
+   "searchNow":{
+      "message": "What your search ？"
+   },
+   "archiveSuccess":{
+      "message": "Archive Success 😊"
+   },
+   "archiveFailed":{
+      "message": "Archive Failed 😭"
+   },
+   "getTabFailed":{
+      "message": "Get Tab Failed 😭"
+   },
+   "memoUploading":{
+      "message": "Sending"
+   },
+   "memoSuccess":{
+      "message": "Success! 😊"
+   },
+   "memoFailed":{
+      "message": "Failed! 😭"
+   }
+}

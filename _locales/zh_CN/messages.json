@@ -1,14 +1,80 @@
 {
+   "extName": {
+      "message": "Memos"
+   },
    "actionTitle": {
-      "description": "按钮标题",
       "message": "发送 Memos"
    },
    "extDescription": {
-      "description": "扩展描述",
       "message": "一键发送灵感时刻，珍藏你的记忆"
    },
-   "extName": {
-      "description": "扩展名称",
-      "message": "Memos-bber"
+   "sendTo": {
+      "message": "发送至 Memos "
+   },
+   "saveBtn":{
+      "message": "保存"
+   },
+   "placeApiUrl":{
+      "message": "请填入 Memos Open API 链接"
+   },
+   "placeContent":{
+      "message": "现在的想法是..."
+   },
+   "lockPrivate":{
+      "message": "仅自己可见"
+   },
+   "lockProtected":{
+      "message": "登录用户可见"
+   },
+   "lockPublic":{
+      "message": "所有人可见"
+   },
+   "submitBtn":{
+      "message": "记下"
+   },
+   "placeHideInput":{
+      "message": "默认“仅自己可见”标签名"
+   },
+   "placeShowInput":{
+      "message": "默认“所有人可见”标签名"
+   },
+   "picDrag":{
+      "message": "拖拽到窗口上传该图片"
+   },
+   "picCancelDrag":{
+      "message": "取消上传"
+   },
+   "picUploading":{
+      "message": "图片上传中……"
+   },
+   "picSuccess":{
+      "message": "上传完成"
+   },
+   "picFailed":{
+      "message": "上传图片失败"
+   },
+   "saveSuccess":{
+      "message": "保存信息成功"
+   },
+   "searchNow":{
+      "message": "想搜点啥？"
+   },
+   "archiveSuccess":{
+      "message": "归档成功！😊"
+   },
+   "archiveFailed":{
+      "message": "归档失败 😭"
+   },
+   "getTabFailed":{
+      "message": "获取标签失败 😭"
+   },
+   "memoUploading":{
+      "message": "发送中……"
+   },
+   "memoSuccess":{
+      "message": "发送成功！😊"
+   },
+   "memoFailed":{
+      "message": "发送失败 😭"
    }
 }

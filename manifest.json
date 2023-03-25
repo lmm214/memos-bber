@@ -1,13 +1,13 @@
 {
    "manifest_version": 3,
    "name": "__MSG_extName__",
-   "version": "2023.03.19",
+   "default_locale": "zh_CN",
+   "version": "2023.03.25",
    "action": {
       "default_popup": "popup.html",
       "default_icon": "assets/logo_24x24.png",
       "default_title": "__MSG_actionTitle__"
    },
-   "default_locale": "zh_CN",
    "description": "__MSG_extDescription__",
    "homepage_url": "https://immmmm.com",
    "icons": {
