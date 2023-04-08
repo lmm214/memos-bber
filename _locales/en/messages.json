@@ -39,10 +39,10 @@
       "message": "Save"
    },
    "placeHideInput":{
-      "message": "Default ‘Only visible to you’ Tag name"
+      "message": "Default 'Only visible to you' Tag name"
    },
    "placeShowInput":{
-      "message": "Default ‘Everyone can see’ Tag name"
+      "message": "Default 'Everyone can see' Tag name"
    },
    "picDrag":{
       "message": "Drag upload the image"
@@ -63,7 +63,7 @@
       "message": "Image uploading is in progress"
    },
    "searchNow":{
-      "message": "What your search ？"
+      "message": "What are you looking for?"
    },
    "archiveSuccess":{
       "message": "Archive Success 😊"
