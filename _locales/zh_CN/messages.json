@@ -9,7 +9,13 @@
       "message": "一键发送灵感时刻，珍藏你的记忆"
    },
    "sendTo": {
-      "message": "发送至 Memos "
+      "message": "发送至 Memos “%s”"
+   },
+   "sendLinkTo": {
+      "message": "发送链接至 Memos"
+   },
+   "sendImageTo": {
+      "message": "发送图片至 Memos"
    },
    "saveBtn":{
       "message": "保存"
@@ -52,6 +58,9 @@
    },
    "picFailed":{
       "message": "上传图片失败"
+   },
+   "picPending":{
+      "message": "有图片等待上传"
    },
    "saveSuccess":{
       "message": "保存信息成功"

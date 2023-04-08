@@ -9,7 +9,13 @@
       "message": "memos: A lightweight, self-hosted memo hub."
    },
    "sendTo": {
-      "message": "SendTo Memos "
+      "message": "SendTo Memos \"%s\""
+   },
+   "sendLinkTo": {
+      "message": "Send link to Memos"
+   },
+   "sendImageTo": {
+      "message": "Send image to Memos"
    },
    "saveBtn":{
       "message": "Save"
@@ -52,6 +58,9 @@
    },
    "picFailed":{
       "message": "Uploading failed"
+   },
+   "picPending":{
+      "message": "Image uploading is in progress"
    },
    "searchNow":{
       "message": "What your search ？"
