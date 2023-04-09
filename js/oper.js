@@ -291,11 +291,12 @@ $('#search').click(function () {
             for(var j=0;j < resourceList.length;j++){
               var restype = resourceList[j].type.slice(0,5);
               var resexlink = resourceList[j].externalLink
-              var resLink = ''
+              var resLink = '',fileId=''
               if(resexlink){
                 resLink = resexlink
               }else{
-                resLink = info.apiUrl.replace(/api\/memo.*/,'')+'o/r/'+resourceList[j].id+'/'+resourceList[j].filename
+                fileId = resourceList[j].publicId || resourceList[j].filename
+                resLink = info.apiUrl.replace(/api\/memo.*/,'')+'o/r/'+resourceList[j].id+'/'+fileId
               }
               if(restype == 'image'){
                 searchDom += '<img class="random-image" src="'+resLink+'"/>'
@@ -366,11 +367,12 @@ function randDom(randomData){
     for(var j=0;j < resourceList.length;j++){
       var restype = resourceList[j].type.slice(0,5);
       var resexlink = resourceList[j].externalLink
-      var resLink = ''
+      var resLink = '',fileId=''
       if(resexlink){
         resLink = resexlink
       }else{
-        resLink = info.apiUrl.replace(/api\/memo.*/,'')+'o/r/'+resourceList[j].id+'/'+resourceList[j].filename
+        fileId = resourceList[j].publicId || resourceList[j].filename
+        resLink = info.apiUrl.replace(/api\/memo.*/,'')+'o/r/'+resourceList[j].id+'/'+fileId
       }
       if(restype == 'image'){
         randomDom += '<img class="random-image" src="'+resLink+'"/>'
