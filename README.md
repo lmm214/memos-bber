@@ -6,6 +6,8 @@ Chrome 应用商店：<https://chrome.google.com/webstore/detail/memos-bber/cbhj
 
 ## 更新日志
 
+2023.04.29 右键菜单的一系列改进，感谢 @EZForever 的 PR [#17](https://github.com/lmm214/memos-bber/pull/17)
+
 2023.04.09 匹配 v0.12.0 附件链接由 filename 改为 publicId 。
 
 2023.03.25 右键菜单发送文本改为“追加模式”（不刷新已打开页面、不刷新已打开页面、不刷新已打开页面时）；新增多语言支持（en、zh-cn）。
