@@ -9,7 +9,13 @@
       "message": "memos: A lightweight, self-hosted memo hub."
    },
    "sendTo": {
-      "message": "SendTo Memos "
+      "message": "SendTo Memos \"%s\""
+   },
+   "sendLinkTo": {
+      "message": "Send link to Memos"
+   },
+   "sendImageTo": {
+      "message": "Send image to Memos"
    },
    "saveBtn":{
       "message": "Save"
@@ -33,10 +39,10 @@
       "message": "Save"
    },
    "placeHideInput":{
-      "message": "Default ‘Only visible to you’ Tag name"
+      "message": "Default 'Only visible to you' Tag name"
    },
    "placeShowInput":{
-      "message": "Default ‘Everyone can see’ Tag name"
+      "message": "Default 'Everyone can see' Tag name"
    },
    "picDrag":{
       "message": "Drag upload the image"
@@ -53,8 +59,11 @@
    "picFailed":{
       "message": "Uploading failed"
    },
+   "picPending":{
+      "message": "Image uploading is in progress"
+   },
    "searchNow":{
-      "message": "What your search ？"
+      "message": "What are you looking for?"
    },
    "archiveSuccess":{
       "message": "Archive Success 😊"
