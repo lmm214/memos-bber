@@ -2,6 +2,7 @@ document.getElementById("saveKey").textContent = chrome.i18n.getMessage("saveBtn
 document.getElementById("saveTag").textContent = chrome.i18n.getMessage("saveBtn");
 
 document.getElementById("apiUrl").placeholder = chrome.i18n.getMessage("placeApiUrl");
+document.getElementById("apiTokens").placeholder = chrome.i18n.getMessage("placeApiTokens");
 document.getElementById("content").placeholder = chrome.i18n.getMessage("placeContent");
 
 document.getElementById("lockPrivate").textContent = chrome.i18n.getMessage("lockPrivate");

@@ -167,10 +167,7 @@ input.inputer{border-bottom: 1px solid #ccc;width:75%;}
     top: 0.5rem;
 }
 #blog_info{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
+
 }
 
 .tip{

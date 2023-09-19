@@ -21,7 +21,10 @@
       "message": "Save"
    },
    "placeApiUrl":{
-      "message": "Memos Open API Link"
+      "message": "Memos Self Home Url"
+   },
+   "placeApiTokens":{
+      "message": "Memos Access Tokens"
    },
    "placeContent":{
       "message": "Any thoughts..."

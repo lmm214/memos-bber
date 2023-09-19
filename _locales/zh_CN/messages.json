@@ -21,7 +21,10 @@
       "message": "保存"
    },
    "placeApiUrl":{
-      "message": "请填入 Memos Open API 链接"
+      "message": "请填入 Memos 主页网址"
+   },
+   "placeApiTokens":{
+      "message": "请填入 Memos Access Tokens"
    },
    "placeContent":{
       "message": "现在的想法是..."

@@ -5,6 +5,7 @@ function get_info(callback) {
   chrome.storage.sync.get(
     {
       apiUrl: '',
+      apiTokens: '',
       hidetag: '',
       showtag: '',
       memo_lock: '',
@@ -22,6 +23,7 @@ function get_info(callback) {
       }
       returnObject.status = flag
       returnObject.apiUrl = items.apiUrl
+      returnObject.apiTokens = items.apiTokens
       returnObject.hidetag = items.hidetag
       returnObject.showtag = items.showtag
       returnObject.memo_lock = items.memo_lock
@@ -54,6 +56,7 @@ get_info(function (info) {
     $("#lock-now").text(chrome.i18n.getMessage("lockProtected"))
   }
   $('#apiUrl').val(info.apiUrl)
+  $('#apiTokens').val(info.apiTokens)
   $('#hideInput').val(info.hidetag)
   $('#showInput').val(info.showtag)
   if (info.open_action === 'upload_image') {
@@ -150,13 +153,7 @@ function uploadImage(data) {
       let now = dayjs().format('YYYYMMDDHHmmss')
       let new_name = old_name[0] + '_' + now + '.' + file_ext;
       formData.append('file', data, new_name)
-      var upAjaxUrl = ''
-      var regUrl = /.*\/api\/v1\/.*/;
-      if (regUrl.test(info.apiUrl)){
-        upAjaxUrl = info.apiUrl.replace(/api\/v1\/memo/,'api/v1/resource/blob')
-      }else{
-        upAjaxUrl = info.apiUrl.replace(/api\/memo/,'api/resource/blob')
-      }
+      var upAjaxUrl = info.apiUrl + 'api/v1/resource/blob'
       $.ajax({
         url: upAjaxUrl,
         data: formData,
@@ -165,14 +162,12 @@ function uploadImage(data) {
         processData: false,
         contentType: false,
         dataType: 'json',
-        success: function (result) {
-          var arrData = result || ''
-          if(result.data){
-            arrData = result.data
-          }
-          if (arrData.id) {
+        headers : {'Authorization':'Bearer ' + info.apiTokens},
+        success: function (data) {
+          console.log(data)
+          if (data.id) {
             //获取到图片
-            relistNow.push(arrData.id)
+            relistNow.push(data.id)
             chrome.storage.sync.set(
               {
                 open_action: '', 
@@ -213,7 +208,8 @@ function uploadImage(data) {
 $('#saveKey').click(function () {
   chrome.storage.sync.set(
     {
-      apiUrl: $('#apiUrl').val()
+      apiUrl: $('#apiUrl').val(),
+      apiTokens: $('#apiTokens').val()
     },
     function () {
       $.message({
@@ -226,26 +222,29 @@ $('#saveKey').click(function () {
 
 $('#opensite').click(function () {
   get_info(function (info) {
-    chrome.tabs.create({url:info.apiUrl.replace(/api\/(v1\/)?memo.*/,'')})
+    chrome.tabs.create({url:info.apiUrl})
   })
 })
 
 $('#tags').click(function () {
   get_info(function (info) {
     if (info.apiUrl) {
-      var tagUrl = info.apiUrl.replace(/api\/(v1\/)?memo/,'api/$1tag')
+      var tagUrl = info.apiUrl+'api/v1/tag'
       var tagDom = ""
-      $.get(tagUrl,function(data){
-        var arrData = data || ''
-        if(data.data){
-          arrData = data.data
+      $.ajax({
+        url:tagUrl,
+        type:"GET",
+        contentType:"application/json;",
+        dataType:"json",
+        headers : {'Authorization':'Bearer ' + info.apiTokens},
+        success: function(data){
+          $.each(data, function(i,obj){
+            tagDom += '<span class="item-container">#'+obj+'</span>'
+          });
+          tagDom += '<svg id="hideTag" class="hidetag" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M78.807 362.435c201.539 314.275 666.962 314.188 868.398-.241 16.056-24.99 13.143-54.241-4.04-62.54-17.244-8.377-40.504 3.854-54.077 24.887-174.484 272.338-577.633 272.41-752.19.195-13.573-21.043-36.874-33.213-54.113-24.837-17.177 8.294-20.06 37.545-3.978 62.536z" fill="#fff"/><path d="M894.72 612.67L787.978 494.386l38.554-34.785 106.742 118.251-38.554 34.816zM635.505 727.51l-49.04-147.123 49.255-16.41 49.054 147.098-49.27 16.435zm-236.18-12.001l-49.568-15.488 43.29-138.48 49.557 15.513-43.28 138.455zM154.49 601.006l-38.743-34.565 95.186-106.732 38.763 34.566-95.206 106.731z" fill="#fff"/></svg>'
+          $("#taglist").html(tagDom).slideToggle(500)
         }
-        $.each(arrData, function(i,obj){
-          tagDom += '<span class="item-container">#'+obj+'</span>'
-        });
-        tagDom += '<svg id="hideTag" class="hidetag" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="24" height="24"><path d="M78.807 362.435c201.539 314.275 666.962 314.188 868.398-.241 16.056-24.99 13.143-54.241-4.04-62.54-17.244-8.377-40.504 3.854-54.077 24.887-174.484 272.338-577.633 272.41-752.19.195-13.573-21.043-36.874-33.213-54.113-24.837-17.177 8.294-20.06 37.545-3.978 62.536z" fill="#fff"/><path d="M894.72 612.67L787.978 494.386l38.554-34.785 106.742 118.251-38.554 34.816zM635.505 727.51l-49.04-147.123 49.255-16.41 49.054 147.098-49.27 16.435zm-236.18-12.001l-49.568-15.488 43.29-138.48 49.557 15.513-43.28 138.455zM154.49 601.006l-38.743-34.565 95.186-106.732 38.763 34.566-95.206 106.731z" fill="#fff"/></svg>'
-        $("#taglist").html(tagDom).slideToggle(500)
-      });
+      })
     } else {
       $.message({
         message: chrome.i18n.getMessage("placeApiUrl")
@@ -294,40 +293,44 @@ $('#search').click(function () {
     var searchDom = ""
     const pattern = $("textarea[name=text]").val()
     if(pattern){
-      $.get( info.apiUrl ,function(data){
-        const options = {keys: ['content']};
-        var fuseData = data || ''
-        if(data.data){
-          fuseData = data.data
-        }
-        const fuse = new Fuse(fuseData, options);
-        var searchData = fuse.search(pattern)
-        for(var i=0;i < searchData.length;i++){
-          searchDom += '<div class="random-item"><div class="random-time"><span id="random-link" data-id="'+searchData[i].item.id+'"><svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="32" height="32"><path d="M864 640a32 32 0 0 1 64 0v224.096A63.936 63.936 0 0 1 864.096 928H159.904A63.936 63.936 0 0 1 96 864.096V159.904C96 124.608 124.64 96 159.904 96H384a32 32 0 0 1 0 64H192.064A31.904 31.904 0 0 0 160 192.064v639.872A31.904 31.904 0 0 0 192.064 864h639.872A31.904 31.904 0 0 0 864 831.936V640zm-485.184 52.48a31.84 31.84 0 0 1-45.12-.128 31.808 31.808 0 0 1-.128-45.12L815.04 166.048l-176.128.736a31.392 31.392 0 0 1-31.584-31.744 32.32 32.32 0 0 1 31.84-32l255.232-1.056a31.36 31.36 0 0 1 31.584 31.584L924.928 388.8a32.32 32.32 0 0 1-32 31.84 31.392 31.392 0 0 1-31.712-31.584l.736-179.392L378.816 692.48z" fill="#666" data-spm-anchor-id="a313x.7781069.0.i12" class="selected"/></svg></span><span id="random-delete" data-id="'+searchData[i].item.id+'"><svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="32" height="32"><path d="M224 322.6h576c16.6 0 30-13.4 30-30s-13.4-30-30-30H224c-16.6 0-30 13.4-30 30 0 16.5 13.5 30 30 30zm66.1-144.2h443.8c16.6 0 30-13.4 30-30s-13.4-30-30-30H290.1c-16.6 0-30 13.4-30 30s13.4 30 30 30zm339.5 435.5H394.4c-16.6 0-30 13.4-30 30s13.4 30 30 30h235.2c16.6 0 30-13.4 30-30s-13.4-30-30-30z" fill="#666"/><path d="M850.3 403.9H173.7c-33 0-60 27-60 60v360c0 33 27 60 60 60h676.6c33 0 60-27 60-60v-360c0-33-27-60-60-60zm-.1 419.8l-.1.1H173.9l-.1-.1V464l.1-.1h676.2l.1.1v359.7z" fill="#666"/></svg></span>'+dayjs(new Date(searchData[i].item.createdTs)*1000).fromNow()+'</div><div class="random-content">'+searchData[i].item.content.replace(/!\[.*?\]\((.*?)\)/g,' <img class="random-image" src="$1"/> ').replace(/\[(.*?)\]\((.*?)\)/g,' <a href="$2" target="_blank">$1</a> ')+'</div>'
-          if(searchData[i].item.resourceList && searchData[i].item.resourceList.length > 0){
-            var resourceList = searchData[i].item.resourceList;
-            for(var j=0;j < resourceList.length;j++){
-              var restype = resourceList[j].type.slice(0,5);
-              var resexlink = resourceList[j].externalLink
-              var resLink = '',fileId=''
-              if(resexlink){
-                resLink = resexlink
-              }else{
-                fileId = resourceList[j].publicId || resourceList[j].filename
-                resLink = info.apiUrl.replace(/api\/(v1\/)?memo.*/,'')+'o/r/'+resourceList[j].id+'/'+fileId
-              }
-              if(restype == 'image'){
-                searchDom += '<img class="random-image" src="'+resLink+'"/>'
-              }
-              if(restype !== 'image'){
-                searchDom += '<a target="_blank" rel="noreferrer" href="'+resLink+'">'+resourceList[j].filename+'</a>'
+      $.ajax({
+        //memos+"api/"+apiV1+"memo?creatorId="+bbMemo.creatorId+"&content="+serchText+"&limit=20";
+        url:info.apiUrl+"api/v1/memo",
+        type:"GET",
+        contentType:"application/json;",
+        dataType:"json",
+        headers : {'Authorization':'Bearer ' + info.apiTokens},
+        success: function(data){
+          const options = {keys: ['content']};
+          const fuse = new Fuse(data, options);
+          var searchData = fuse.search(pattern)
+          for(var i=0;i < searchData.length;i++){
+            searchDom += '<div class="random-item"><div class="random-time"><span id="random-link" data-id="'+searchData[i].item.id+'"><svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="32" height="32"><path d="M864 640a32 32 0 0 1 64 0v224.096A63.936 63.936 0 0 1 864.096 928H159.904A63.936 63.936 0 0 1 96 864.096V159.904C96 124.608 124.64 96 159.904 96H384a32 32 0 0 1 0 64H192.064A31.904 31.904 0 0 0 160 192.064v639.872A31.904 31.904 0 0 0 192.064 864h639.872A31.904 31.904 0 0 0 864 831.936V640zm-485.184 52.48a31.84 31.84 0 0 1-45.12-.128 31.808 31.808 0 0 1-.128-45.12L815.04 166.048l-176.128.736a31.392 31.392 0 0 1-31.584-31.744 32.32 32.32 0 0 1 31.84-32l255.232-1.056a31.36 31.36 0 0 1 31.584 31.584L924.928 388.8a32.32 32.32 0 0 1-32 31.84 31.392 31.392 0 0 1-31.712-31.584l.736-179.392L378.816 692.48z" fill="#666" data-spm-anchor-id="a313x.7781069.0.i12" class="selected"/></svg></span><span id="random-delete" data-id="'+searchData[i].item.id+'"><svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="32" height="32"><path d="M224 322.6h576c16.6 0 30-13.4 30-30s-13.4-30-30-30H224c-16.6 0-30 13.4-30 30 0 16.5 13.5 30 30 30zm66.1-144.2h443.8c16.6 0 30-13.4 30-30s-13.4-30-30-30H290.1c-16.6 0-30 13.4-30 30s13.4 30 30 30zm339.5 435.5H394.4c-16.6 0-30 13.4-30 30s13.4 30 30 30h235.2c16.6 0 30-13.4 30-30s-13.4-30-30-30z" fill="#666"/><path d="M850.3 403.9H173.7c-33 0-60 27-60 60v360c0 33 27 60 60 60h676.6c33 0 60-27 60-60v-360c0-33-27-60-60-60zm-.1 419.8l-.1.1H173.9l-.1-.1V464l.1-.1h676.2l.1.1v359.7z" fill="#666"/></svg></span>'+dayjs(new Date(searchData[i].item.createdTs)*1000).fromNow()+'</div><div class="random-content">'+searchData[i].item.content.replace(/!\[.*?\]\((.*?)\)/g,' <img class="random-image" src="$1"/> ').replace(/\[(.*?)\]\((.*?)\)/g,' <a href="$2" target="_blank">$1</a> ')+'</div>'
+            if(searchData[i].item.resourceList && searchData[i].item.resourceList.length > 0){
+              var resourceList = searchData[i].item.resourceList;
+              for(var j=0;j < resourceList.length;j++){
+                var restype = resourceList[j].type.slice(0,5);
+                var resexlink = resourceList[j].externalLink
+                var resLink = '',fileId=''
+                if(resexlink){
+                  resLink = resexlink
+                }else{
+                  fileId = resourceList[j].publicId || resourceList[j].filename
+                  resLink = info.apiUrl+'o/r/'+resourceList[j].id+'/'+fileId
+                }
+                if(restype == 'image'){
+                  searchDom += '<img class="random-image" src="'+resLink+'"/>'
+                }
+                if(restype !== 'image'){
+                  searchDom += '<a target="_blank" rel="noreferrer" href="'+resLink+'">'+resourceList[j].filename+'</a>'
+                }
               }
             }
+            searchDom += '</div>'
           }
-          searchDom += '</div>'
+          window.ViewImage && ViewImage.init('.random-image')
+          $("#randomlist").html(searchDom).slideDown(500);
         }
-        window.ViewImage && ViewImage.init('.random-image')
-        $("#randomlist").html(searchDom).slideDown(500);
       });
     }else{
       $.message({
@@ -348,34 +351,54 @@ $('#random').click(function () {
       $("#randomlist").html('').hide()
       var nowTag = $("textarea[name=text]").val().match(/#([^\s#]+)/)
       if( $("#taglist").is(':visible') && nowTag[1]){
-        var tagUrl = info.apiUrl+'&rowStatus=NORMAL&tag='+nowTag[1]
-        $.get(tagUrl,function(data){
-          var arrData = data || ''
-          if(data.data){
-            arrData = data.data
+        var tagUrl = info.apiUrl+'api/v1/memo?rowStatus=NORMAL&tag='+nowTag[1]
+        $.ajax({
+          url:tagUrl,
+          type:"GET",
+          contentType:"application/json;",
+          dataType:"json",
+          headers : {'Authorization':'Bearer ' + info.apiTokens},
+          success: function(data){
+            let randomNum = Math.floor(Math.random() * (data.length));
+            var randomData = data[randomNum]
+            randDom(randomData)
           }
-          let randomNum = Math.floor(Math.random() * (arrData.length));
-          var randomData = arrData[randomNum]
-          randDom(randomData)
         })
       }else{
-        var randomUrl0 = info.apiUrl+'&rowStatus=NORMAL&limit=1'
-        $.get(randomUrl0,function(data){
-          var arrData = data || ''
-          if(data.data){
-            arrData = data.data
-          }
-          var creatorId = arrData[0].creatorId
-          var randomUrl1 = info.apiUrl.replace(/api\/(v1\/)?memo.*/,'api/$1memo/stats?creatorId=')+creatorId
-          $.get(randomUrl1,function(data){
-            let randomNum = Math.floor(Math.random() * (arrData.length)) + 1;
-            var randomUrl2 = info.apiUrl+'&rowStatus=NORMAL&limit=1&offset='+randomNum
-            $.get(randomUrl2,function(data){
-              var randomData = arrData[0]
-              randDom(randomData)
+        var randomUrl0 = info.apiUrl+'api/v1/memo?rowStatus=NORMAL&limit=1'
+        $.ajax({
+          url:randomUrl0,
+          type:"GET",
+          contentType:"application/json;",
+          dataType:"json",
+          headers : {'Authorization':'Bearer ' + info.apiTokens},
+          success: function(data0){
+            var creatorId = data0[0].creatorId
+            var randomUrl1 = info.apiUrl+'api/v1/memo/stats?creatorId='+creatorId
+            $.ajax({
+              url:randomUrl1,
+              type:"GET",
+              contentType:"application/json;",
+              dataType:"json",
+              headers : {'Authorization':'Bearer ' + info.apiTokens},
+              success: function(data1){
+                let randomNum = Math.floor(Math.random() * (data1.length)) + 1;
+                var randomUrl2 = info.apiUrl+'api/v1/memo?rowStatus=NORMAL&limit=1&offset='+randomNum
+                $.ajax({
+                  url:randomUrl2,
+                  type:"GET",
+                  contentType:"application/json;",
+                  dataType:"json",
+                  headers : {'Authorization':'Bearer ' + info.apiTokens},
+                  success: function(data2){
+                    var randomData = data2[0]
+                    randDom(randomData)
+                  }
+                });
+              }
             });
-          });
-        });
+          }
+        })
       }
     } else {
       $.message({
@@ -398,7 +421,7 @@ function randDom(randomData){
         resLink = resexlink
       }else{
         fileId = resourceList[j].publicId || resourceList[j].filename
-        resLink = info.apiUrl.replace(/api\/(v1\/)?memo.*/,'')+'o/r/'+resourceList[j].id+'/'+fileId
+        resLink = info.apiUrl+'o/r/'+resourceList[j].id+'/'+fileId
       }
       if(restype == 'image'){
         randomDom += '<img class="random-image" src="'+resLink+'"/>'
@@ -417,14 +440,14 @@ function randDom(randomData){
 $(document).on("click","#random-link",function () {
   var memoId = $("#random-link").data('id');
   get_info(function (info) {
-    chrome.tabs.create({url:info.apiUrl.replace(/api\/(v1\/)?memo.*/,'')+"m/"+memoId})
+    chrome.tabs.create({url:info.apiUrl+"m/"+memoId})
   })
 })
 
 $(document).on("click","#random-delete",function () {
 get_info(function (info) {
   var memosId = $("#random-delete").data('id');
-  var deleteUrl = info.apiUrl.replace(/api\/(v1\/)?memo(.*)/,'api/$1memo/'+memosId+'$2')
+  var deleteUrl = info.apiUrl+'api/v1/memo/'+memosId
   $.ajax({
     url:deleteUrl,
     type:"PATCH",
@@ -434,6 +457,7 @@ get_info(function (info) {
     }),
     contentType:"application/json;",
     dataType:"json",
+    headers : {'Authorization':'Bearer ' + info.apiTokens},
     success: function(result){
           $("#randomlist").html('').hide()
               $.message({
@@ -518,14 +542,17 @@ function getOne(memosId){
   get_info(function (info) {
   if (info.apiUrl) {
     $("#randomlist").html('').hide()
-        var getUrl = info.apiUrl.replace(/api\/(v1\/)?memo(.*)/,'api/$1memo/'+memosId+'$2')
-        $.get(getUrl,function(data){
-          var arrData = data || ''
-          if(data.data){
-            arrData = data.data
+        var getUrl = info.apiUrl+'api/v1/memo/'+memosId
+        $.ajax({
+          url:getUrl,
+          type:"GET",
+          contentType:"application/json;",
+          dataType:"json",
+          headers : {'Authorization':'Bearer ' + info.apiTokens},
+          success: function(data){
+            randDom(data)
           }
-          randDom(arrData)
-        });
+        })
   } else {
     $.message({
       message: chrome.i18n.getMessage("placeApiUrl")
@@ -554,7 +581,7 @@ function sendText() {
         }
       }
       $.ajax({
-        url:info.apiUrl,
+        url:info.apiUrl+'api/v1/memo',
         type:"POST",
         data:JSON.stringify({
           'content': content,
@@ -563,13 +590,10 @@ function sendText() {
         }),
         contentType:"application/json;",
         dataType:"json",
-        success: function(result){
+        headers : {'Authorization':'Bearer ' + info.apiTokens},
+        success: function(data){
               //发送成功
-              var arrData = result || ''
-              if(result.data){
-                arrData = result.data
-              }
-              getOne(arrData.id)
+              getOne(data.id)
               chrome.storage.sync.set(
                 { open_action: '', open_content: '',resourceIdList:''},
                 function () {
