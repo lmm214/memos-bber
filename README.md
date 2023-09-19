@@ -8,6 +8,8 @@ Chrome 应用商店：<https://chrome.google.com/webstore/detail/memos-bber/cbhj
 
 2023.09.19 不兼容更新匹配 Memos v0.15 的 `Access tokens` 模式。
 
+<img width="483" alt="123" src="https://github.com/lmm214/memos-bber/assets/1472390/4ce2edc2-ce64-44d5-b4ef-d2e79b9d6a1a">
+
 2023.07.16 支持 Memos v0.14.0 `api/v1`，同时兼容之前的 api。 
 
 2023.04.29 右键菜单的一系列改进，感谢 @EZForever 的 PR [#17](https://github.com/lmm214/memos-bber/pull/17)
