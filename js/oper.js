@@ -22,6 +22,9 @@ function get_info(callback) {
         flag = true
       }
       returnObject.status = flag
+      if (!items.apiUrl.endsWith('/')) {
+        items.apiUrl += '/';
+      }
       returnObject.apiUrl = items.apiUrl
       returnObject.apiTokens = items.apiTokens
       returnObject.hidetag = items.hidetag
