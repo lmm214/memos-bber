@@ -581,7 +581,7 @@ function sendText() {
         }
       }
       $.ajax({
-        url:info.apiUrl+'api/v1/memo',
+        url:info.apiUrl+'api/v1/memos',
         type:"POST",
         data:JSON.stringify({
           'content': content,
