@@ -22,6 +22,9 @@ function get_info(callback) {
         flag = true
       }
       returnObject.status = flag
+      if (!items.apiUrl.endsWith('/')) {
+        items.apiUrl += '/';
+      }
       returnObject.apiUrl = items.apiUrl
       returnObject.apiTokens = items.apiTokens
       returnObject.hidetag = items.hidetag
@@ -581,7 +584,7 @@ function sendText() {
         }
       }
       $.ajax({
-        url:info.apiUrl+'api/v1/memo',
+        url:info.apiUrl+'api/v1/memos',
         type:"POST",
         data:JSON.stringify({
           'content': content,
