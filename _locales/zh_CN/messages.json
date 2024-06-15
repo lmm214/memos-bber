@@ -88,5 +88,8 @@
    },
    "memoFailed":{
       "message": "发送失败 😭"
+   },
+   "invalidToken":{
+      "message": "无效的 token 或 url 😭"
    }
 }
