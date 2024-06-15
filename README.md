@@ -6,6 +6,8 @@ Chrome 应用商店：<https://chrome.google.com/webstore/detail/memos-bber/cbhj
 
 ## 更新日志
 
+2024.06.15 感谢好心人 [PR#44](https://github.com/lmm214/memos-bber/pull/44)
+
 2024.05.20 更新匹配至 v0.22
 
 2023.09.19 不兼容更新匹配 Memos v0.15 的 `Access tokens` 模式。
