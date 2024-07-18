@@ -23,9 +23,6 @@ function get_info(callback) {
         flag = true
       }
       returnObject.status = flag
-      if (!items.apiUrl.endsWith('/')) {
-        items.apiUrl += '/';
-      }
       returnObject.apiUrl = items.apiUrl
       returnObject.apiTokens = items.apiTokens
       returnObject.hidetag = items.hidetag
@@ -212,6 +209,9 @@ function uploadImage(data) {
 
 $('#saveKey').click(function () {
   var apiUrl = $('#apiUrl').val()
+  if (apiUrl.length > 0 && !apiUrl.endsWith('/')) {
+    apiUrl += '/';
+  }
   var apiTokens = $('#apiTokens').val()
   // 设置请求参数
   const settings = {
