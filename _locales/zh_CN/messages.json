@@ -71,6 +71,9 @@
    "searchNow":{
       "message": "想搜点啥？"
    },
+   "searchNone":{
+      "message": "搜不到，换个词试试"
+   },
    "archiveSuccess":{
       "message": "归档成功！😊"
    },

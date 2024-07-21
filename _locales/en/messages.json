@@ -65,8 +65,14 @@
    "picPending":{
       "message": "Image uploading is in progress"
    },
+   "saveSuccess":{
+      "message": "Save Info Success!"
+   },
    "searchNow":{
       "message": "What are you looking for?"
+   },
+   "searchNone":{
+      "message": "Try another word!"
    },
    "archiveSuccess":{
       "message": "Archive Success 😊"
