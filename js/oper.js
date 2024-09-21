@@ -299,7 +299,7 @@ $('#tags').click(function () {
       $.ajax({
         url: tagUrl,
         type: "GET",
-        contentType: "application/json;",
+        contentType: "application/json",
         dataType: "json",
         headers: { 'Authorization': 'Bearer ' + info.apiTokens },
         success: function (data) {
@@ -362,7 +362,7 @@ $('#search').click(function () {
       $.ajax({
         url:info.apiUrl+"api/v1/memos"+filter,
         type:"GET",
-        contentType:"application/json;",
+        contentType:"application/json",
         dataType:"json",
         headers : {'Authorization':'Bearer ' + info.apiTokens},
         success: function(data){
@@ -423,7 +423,7 @@ $('#random').click(function () {
       $.ajax({
         url:randomUrl,
         type:"GET",
-        contentType:"application/json;",
+        contentType:"application/json",
         dataType:"json",
         headers : {'Authorization':'Bearer ' + info.apiTokens},
         success: function(data){
@@ -488,7 +488,7 @@ get_info(function (info) {
       'uid': memoUid,
       'rowStatus': "ARCHIVED"
     }),
-    contentType:"application/json;",
+    contentType:"application/json",
     dataType:"json",
     headers : {'Authorization':'Bearer ' + info.apiTokens},
     success: function(result){
@@ -579,7 +579,7 @@ function getOne(memosId){
         $.ajax({
           url:getUrl,
           type:"GET",
-          contentType:"application/json;",
+          contentType:"application/json",
           dataType:"json",
           headers : {'Authorization':'Bearer ' + info.apiTokens},
           success: function(data){
@@ -620,7 +620,7 @@ function sendText() {
           'content': content,
           'visibility': sendvisi
         }),
-        contentType:"application/json;",
+        contentType:"application/json",
         dataType:"json",
         headers : {'Authorization':'Bearer ' + info.apiTokens},
         success: function(data){
@@ -632,7 +632,7 @@ function sendText() {
               data:JSON.stringify({
                 'resources': info.resourceIdList || [],
               }),
-              contentType:"application/json;",
+              contentType:"application/json",
               dataType:"json",
               headers : {'Authorization':'Bearer ' + info.apiTokens},
               success: function(res){
