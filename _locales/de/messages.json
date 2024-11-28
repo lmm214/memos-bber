@@ -1,1 +1,98 @@
-
+{
+   "extName": {
+      "message": "Memos"
+   },
+   "actionTitle": {
+      "message": "Notizen senden"
+   },
+   "extDescription": {
+      "message": "Memos: Ein leichtgewichtiges, selbst gehostetes Memo-Hub."
+   },
+   "sendTo": {
+      "message": "An Memos senden \"%s\""
+   },
+   "sendLinkTo": {
+      "message": "Link an Memos senden"
+   },
+   "sendImageTo": {
+      "message": "Bild an Memos senden"
+   },
+   "saveBtn": {
+      "message": "Speichern"
+   },
+   "placeApiUrl": {
+      "message": "Memos Self-Hosting-URL"
+   },
+   "placeApiTokens": {
+      "message": "Memos-Zugriffstoken"
+   },
+   "placeContent": {
+      "message": "Irgendwelche Gedanken..."
+   },
+   "lockPrivate": {
+      "message": "Nur für dich sichtbar"
+   },
+   "lockProtected": {
+      "message": "Für Mitglieder sichtbar"
+   },
+   "lockPublic": {
+      "message": "Für alle sichtbar"
+   },
+   "submitBtn": {
+      "message": "Speichern"
+   },
+   "placeHideInput": {
+      "message": "Standard-Tagname 'Nur für dich sichtbar'"
+   },
+   "placeShowInput": {
+      "message": "Standard-Tagname 'Für alle sichtbar'"
+   },
+   "picDrag": {
+      "message": "Bild zum Hochladen ziehen"
+   },
+   "picCancelDrag": {
+      "message": "Upload abbrechen"
+   },
+   "picUploading": {
+      "message": "Bild wird hochgeladen..."
+   },
+   "picSuccess": {
+      "message": "Upload abgeschlossen"
+   },
+   "picFailed": {
+      "message": "Upload fehlgeschlagen"
+   },
+   "picPending": {
+      "message": "Bild-Upload läuft"
+   },
+   "saveSuccess": {
+      "message": "Speichern erfolgreich!"
+   },
+   "searchNow": {
+      "message": "Wonach suchst du?"
+   },
+   "searchNone": {
+      "message": "Versuche ein anderes Wort!"
+   },
+   "archiveSuccess": {
+      "message": "Archivieren erfolgreich 😊"
+   },
+   "archiveFailed": {
+      "message": "Archivieren fehlgeschlagen 😭"
+   },
+   "getTabFailed": {
+      "message": "Tab konnte nicht geladen werden 😭"
+   },
+   "memoUploading": {
+      "message": "Wird gesendet"
+   },
+   "memoSuccess": {
+      "message": "Erfolgreich! 😊"
+   },
+   "memoFailed": {
+      "message": "Fehlgeschlagen! 😭"
+   },
+   "invalidToken": {
+      "message": "Ungültiges Token oder URL 😭"
+   }
+}
