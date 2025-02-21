@@ -194,10 +194,10 @@ function uploadImageNow(base64String, file) {
         success: function (data) {
           // 0.24 版本+ 返回体uid已合并到name字段
           if (data.name) {
-            var resUid = data.name.split('/').pop()
+            // 更新上传的文件信息并暂存浏览器本地
             relistNow.push({
               "name":data.name,
-              "uid":resUid,
+              "createTime":data.createTime,
               "type":data.type
             })
             chrome.storage.sync.set(
@@ -637,7 +637,7 @@ function sendText() {
           if(info.resourceIdList.length > 0 ){
             //匹配图片
             $.ajax({
-              url:info.apiUrl+'api/v1/'+data.name+'/resources',
+              url:info.apiUrl+'api/v1/'+data.name,
               type:"PATCH",
               data:JSON.stringify({
                 'resources': info.resourceIdList || [],
@@ -653,7 +653,7 @@ function sendText() {
             getOne(data.name)
           }
           chrome.storage.sync.set(
-            { open_action: '', open_content: '',resourceIdList:''},
+            { open_action: '', open_content: '',resourceIdList:[]},
             function () {
               $.message({
                 message: chrome.i18n.getMessage("memoSuccess")
@@ -664,7 +664,7 @@ function sendText() {
           )
       },error:function(err){//清空open_action（打开时候进行的操作）,同时清空open_content
               chrome.storage.sync.set(
-                { open_action: '', open_content: '',resourceIdList:'' },
+                { open_action: '', open_content: '',resourceIdList:[] },
                 function () {
                   $.message({
                     message: chrome.i18n.getMessage("memoFailed")
