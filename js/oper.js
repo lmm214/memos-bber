@@ -305,7 +305,7 @@ $('#tags').click(function () {
       $.ajax({
         url: tagUrl,
         type: "GET",
-        contentType: "application/json;",
+        contentType: "application/json",
         dataType: "json",
         headers: { 'Authorization': 'Bearer ' + info.apiTokens },
         success: function (data) {
@@ -360,15 +360,16 @@ $(document).on("click",".item-lock",function () {
 $('#search').click(function () {
   get_info(function (info) {
   const pattern = $("textarea[name=text]").val()
-  var filter = "?filter=" + encodeURIComponent(`creator == 'users/${info.userid}' && visibilities == ['PUBLIC', 'PROTECTED'] && content_search == ['${pattern}']`);
+  var parent = `users/${info.userid}`;
+  var filter = "?filter=" + encodeURIComponent(`visibility in ["PUBLIC","PROTECTED"] && content.contains("${pattern}")`);
   if (info.status) {
     $("#randomlist").html('').hide()
     var searchDom = ""
     if(pattern){
       $.ajax({
-        url:info.apiUrl+"api/v1/memos"+filter,
+        url:info.apiUrl+"api/v1/"+parent+"/memos"+filter,
         type:"GET",
-        contentType:"application/json;",
+        contentType:"application/json",
         dataType:"json",
         headers : {'Authorization':'Bearer ' + info.apiTokens},
         success: function(data){
@@ -379,7 +380,8 @@ $('#search').click(function () {
             })
           }else{
             for(var i=0;i < searchData.length;i++){
-              searchDom += '<div class="random-item"><div class="random-time"><span id="random-link" data-uid="'+searchData[i].uid+'"><svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="32" height="32"><path d="M864 640a32 32 0 0 1 64 0v224.096A63.936 63.936 0 0 1 864.096 928H159.904A63.936 63.936 0 0 1 96 864.096V159.904C96 124.608 124.64 96 159.904 96H384a32 32 0 0 1 0 64H192.064A31.904 31.904 0 0 0 160 192.064v639.872A31.904 31.904 0 0 0 192.064 864h639.872A31.904 31.904 0 0 0 864 831.936V640zm-485.184 52.48a31.84 31.84 0 0 1-45.12-.128 31.808 31.808 0 0 1-.128-45.12L815.04 166.048l-176.128.736a31.392 31.392 0 0 1-31.584-31.744 32.32 32.32 0 0 1 31.84-32l255.232-1.056a31.36 31.36 0 0 1 31.584 31.584L924.928 388.8a32.32 32.32 0 0 1-32 31.84 31.392 31.392 0 0 1-31.712-31.584l.736-179.392L378.816 692.48z" fill="#666" data-spm-anchor-id="a313x.7781069.0.i12" class="selected"/></svg></span><span id="random-delete" data-name="'+searchData[i].name+'" data-uid="'+searchData[i].uid+'"><svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="32" height="32"><path d="M224 322.6h576c16.6 0 30-13.4 30-30s-13.4-30-30-30H224c-16.6 0-30 13.4-30 30 0 16.5 13.5 30 30 30zm66.1-144.2h443.8c16.6 0 30-13.4 30-30s-13.4-30-30-30H290.1c-16.6 0-30 13.4-30 30s13.4 30 30 30zm339.5 435.5H394.4c-16.6 0-30 13.4-30 30s13.4 30 30 30h235.2c16.6 0 30-13.4 30-30s-13.4-30-30-30z" fill="#666"/><path d="M850.3 403.9H173.7c-33 0-60 27-60 60v360c0 33 27 60 60 60h676.6c33 0 60-27 60-60v-360c0-33-27-60-60-60zm-.1 419.8l-.1.1H173.9l-.1-.1V464l.1-.1h676.2l.1.1v359.7z" fill="#666"/></svg></span>'+dayjs(searchData.createTime).fromNow()+'</div><div class="random-content">'+searchData[i].content.replace(/!\[.*?\]\((.*?)\)/g,' <img class="random-image" src="$1"/> ').replace(/\[(.*?)\]\((.*?)\)/g,' <a href="$2" target="_blank">$1</a> ')+'</div>'
+              var memosID = searchData[i].name.split('/').pop();
+              searchDom += '<div class="random-item"><div class="random-time"><span id="random-link" data-uid="'+memosID+'"><svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="32" height="32"><path d="M864 640a32 32 0 0 1 64 0v224.096A63.936 63.936 0 0 1 864.096 928H159.904A63.936 63.936 0 0 1 96 864.096V159.904C96 124.608 124.64 96 159.904 96H384a32 32 0 0 1 0 64H192.064A31.904 31.904 0 0 0 160 192.064v639.872A31.904 31.904 0 0 0 192.064 864h639.872A31.904 31.904 0 0 0 864 831.936V640zm-485.184 52.48a31.84 31.84 0 0 1-45.12-.128 31.808 31.808 0 0 1-.128-45.12L815.04 166.048l-176.128.736a31.392 31.392 0 0 1-31.584-31.744 32.32 32.32 0 0 1 31.84-32l255.232-1.056a31.36 31.36 0 0 1 31.584 31.584L924.928 388.8a32.32 32.32 0 0 1-32 31.84 31.392 31.392 0 0 1-31.712-31.584l.736-179.392L378.816 692.48z" fill="#666" data-spm-anchor-id="a313x.7781069.0.i12" class="selected"/></svg></span><span id="random-delete" data-name="'+searchData[i].name+'" data-uid="'+memosID+'"><svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="32" height="32"><path d="M224 322.6h576c16.6 0 30-13.4 30-30s-13.4-30-30-30H224c-16.6 0-30 13.4-30 30 0 16.5 13.5 30 30 30zm66.1-144.2h443.8c16.6 0 30-13.4 30-30s-13.4-30-30-30H290.1c-16.6 0-30 13.4-30 30s13.4 30 30 30zm339.5 435.5H394.4c-16.6 0-30 13.4-30 30s13.4 30 30 30h235.2c16.6 0 30-13.4 30-30s-13.4-30-30-30z" fill="#666"/><path d="M850.3 403.9H173.7c-33 0-60 27-60 60v360c0 33 27 60 60 60h676.6c33 0 60-27 60-60v-360c0-33-27-60-60-60zm-.1 419.8l-.1.1H173.9l-.1-.1V464l.1-.1h676.2l.1.1v359.7z" fill="#666"/></svg></span>'+dayjs(searchData.createTime).fromNow()+'</div><div class="random-content">'+searchData[i].content.replace(/!\[.*?\]\((.*?)\)/g,' <img class="random-image" src="$1"/> ').replace(/\[(.*?)\]\((.*?)\)/g,' <a href="$2" target="_blank">$1</a> ')+'</div>'
               if(searchData[i].resources && searchData[i].resources.length > 0){
                 var resources = searchData[i].resources;
                 for(var j=0;j < resources.length;j++){
@@ -422,14 +424,15 @@ $('#search').click(function () {
 
 $('#random').click(function () {
   get_info(function (info) {
-    var filter = "?filter=" + encodeURIComponent(`creator == 'users/${info.userid}'`);
+    var parent = `users/${info.userid}`;
+    var filter = "?filter=" + encodeURIComponent(`visibility in ["PUBLIC","PROTECTED"]`);
     if (info.status) {
       $("#randomlist").html('').hide()
-      var randomUrl = info.apiUrl + 'api/v1/memos' + filter;
+      var randomUrl = info.apiUrl + "api/v1/" +parent + "/memos" + filter;
       $.ajax({
         url:randomUrl,
         type:"GET",
-        contentType:"application/json;",
+        contentType:"application/json",
         dataType:"json",
         headers : {'Authorization':'Bearer ' + info.apiTokens},
         success: function(data){
@@ -448,7 +451,8 @@ $('#random').click(function () {
 
 function randDom(randomData){
   get_info(function (info) {
-  var randomDom = '<div class="random-item"><div class="random-time"><span id="random-link" data-uid="'+randomData.uid+'"><svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="32" height="32"><path d="M864 640a32 32 0 0 1 64 0v224.096A63.936 63.936 0 0 1 864.096 928H159.904A63.936 63.936 0 0 1 96 864.096V159.904C96 124.608 124.64 96 159.904 96H384a32 32 0 0 1 0 64H192.064A31.904 31.904 0 0 0 160 192.064v639.872A31.904 31.904 0 0 0 192.064 864h639.872A31.904 31.904 0 0 0 864 831.936V640zm-485.184 52.48a31.84 31.84 0 0 1-45.12-.128 31.808 31.808 0 0 1-.128-45.12L815.04 166.048l-176.128.736a31.392 31.392 0 0 1-31.584-31.744 32.32 32.32 0 0 1 31.84-32l255.232-1.056a31.36 31.36 0 0 1 31.584 31.584L924.928 388.8a32.32 32.32 0 0 1-32 31.84 31.392 31.392 0 0 1-31.712-31.584l.736-179.392L378.816 692.48z" fill="#666" data-spm-anchor-id="a313x.7781069.0.i12" class="selected"/></svg></span><span id="random-delete" data-uid="'+randomData.uid+'" data-name="'+randomData.name+'"><svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="32" height="32"><path d="M224 322.6h576c16.6 0 30-13.4 30-30s-13.4-30-30-30H224c-16.6 0-30 13.4-30 30 0 16.5 13.5 30 30 30zm66.1-144.2h443.8c16.6 0 30-13.4 30-30s-13.4-30-30-30H290.1c-16.6 0-30 13.4-30 30s13.4 30 30 30zm339.5 435.5H394.4c-16.6 0-30 13.4-30 30s13.4 30 30 30h235.2c16.6 0 30-13.4 30-30s-13.4-30-30-30z" fill="#666"/><path d="M850.3 403.9H173.7c-33 0-60 27-60 60v360c0 33 27 60 60 60h676.6c33 0 60-27 60-60v-360c0-33-27-60-60-60zm-.1 419.8l-.1.1H173.9l-.1-.1V464l.1-.1h676.2l.1.1v359.7z" fill="#666"/></svg></span>'+dayjs(randomData.createTime).fromNow()+'</div><div class="random-content">'+randomData.content.replace(/!\[.*?\]\((.*?)\)/g,' <img class="random-image" src="$1"/> ').replace(/\[(.*?)\]\((.*?)\)/g,' <a href="$2" target="_blank">$1</a> ')+'</div>'
+  var memosID = randomData.name.split('/').pop();
+  var randomDom = '<div class="random-item"><div class="random-time"><span id="random-link" data-uid="'+memosID+'"><svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="32" height="32"><path d="M864 640a32 32 0 0 1 64 0v224.096A63.936 63.936 0 0 1 864.096 928H159.904A63.936 63.936 0 0 1 96 864.096V159.904C96 124.608 124.64 96 159.904 96H384a32 32 0 0 1 0 64H192.064A31.904 31.904 0 0 0 160 192.064v639.872A31.904 31.904 0 0 0 192.064 864h639.872A31.904 31.904 0 0 0 864 831.936V640zm-485.184 52.48a31.84 31.84 0 0 1-45.12-.128 31.808 31.808 0 0 1-.128-45.12L815.04 166.048l-176.128.736a31.392 31.392 0 0 1-31.584-31.744 32.32 32.32 0 0 1 31.84-32l255.232-1.056a31.36 31.36 0 0 1 31.584 31.584L924.928 388.8a32.32 32.32 0 0 1-32 31.84 31.392 31.392 0 0 1-31.712-31.584l.736-179.392L378.816 692.48z" fill="#666" data-spm-anchor-id="a313x.7781069.0.i12" class="selected"/></svg></span><span id="random-delete" data-uid="'+memosID+'" data-name="'+randomData.name+'"><svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="32" height="32"><path d="M224 322.6h576c16.6 0 30-13.4 30-30s-13.4-30-30-30H224c-16.6 0-30 13.4-30 30 0 16.5 13.5 30 30 30zm66.1-144.2h443.8c16.6 0 30-13.4 30-30s-13.4-30-30-30H290.1c-16.6 0-30 13.4-30 30s13.4 30 30 30zm339.5 435.5H394.4c-16.6 0-30 13.4-30 30s13.4 30 30 30h235.2c16.6 0 30-13.4 30-30s-13.4-30-30-30z" fill="#666"/><path d="M850.3 403.9H173.7c-33 0-60 27-60 60v360c0 33 27 60 60 60h676.6c33 0 60-27 60-60v-360c0-33-27-60-60-60zm-.1 419.8l-.1.1H173.9l-.1-.1V464l.1-.1h676.2l.1.1v359.7z" fill="#666"/></svg></span>'+dayjs(randomData.createTime).fromNow()+'</div><div class="random-content">'+randomData.content.replace(/!\[.*?\]\((.*?)\)/g,' <img class="random-image" src="$1"/> ').replace(/\[(.*?)\]\((.*?)\)/g,' <a href="$2" target="_blank">$1</a> ')+'</div>'
   if(randomData.resources && randomData.resources.length > 0){
     var resources = randomData.resources;
     for(var j=0;j < resources.length;j++){
@@ -484,17 +488,17 @@ $(document).on("click","#random-link",function () {
 
 $(document).on("click","#random-delete",function () {
 get_info(function (info) {
-  var memoUid = $("#random-delete").data('uid');
+  // var memoUid = $("#random-delete").data('uid');
   var memosName = $("#random-delete").data('name');
   var deleteUrl = info.apiUrl+'api/v1/'+memosName
   $.ajax({
     url:deleteUrl,
     type:"PATCH",
     data:JSON.stringify({
-      'uid': memoUid,
-      'rowStatus': "ARCHIVED"
+      // 'uid': memoUid,
+      'state': "ARCHIVED"
     }),
-    contentType:"application/json;",
+    contentType:"application/json",
     dataType:"json",
     headers : {'Authorization':'Bearer ' + info.apiTokens},
     success: function(result){
@@ -585,7 +589,7 @@ function getOne(memosId){
         $.ajax({
           url:getUrl,
           type:"GET",
-          contentType:"application/json;",
+          contentType:"application/json",
           dataType:"json",
           headers : {'Authorization':'Bearer ' + info.apiTokens},
           success: function(data){
@@ -626,7 +630,7 @@ function sendText() {
           'content': content,
           'visibility': sendvisi
         }),
-        contentType:"application/json;",
+        contentType:"application/json",
         dataType:"json",
         headers : {'Authorization':'Bearer ' + info.apiTokens},
         success: function(data){
@@ -638,7 +642,7 @@ function sendText() {
               data:JSON.stringify({
                 'resources': info.resourceIdList || [],
               }),
-              contentType:"application/json;",
+              contentType:"application/json",
               dataType:"json",
               headers : {'Authorization':'Bearer ' + info.apiTokens},
               success: function(res){
