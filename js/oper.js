@@ -192,10 +192,12 @@ function uploadImageNow(base64String, file) {
         dataType: 'json',
         headers: { 'Authorization': 'Bearer ' + info.apiTokens },
         success: function (data) {
-          if (data.uid) {
+          // 0.24 版本+ 返回体uid已合并到name字段
+          if (data.name) {
+            var resUid = data.name.split('/').pop()
             relistNow.push({
               "name":data.name,
-              "uid":data.uid,
+              "uid":resUid,
               "type":data.type
             })
             chrome.storage.sync.set(
@@ -253,13 +255,15 @@ $('#saveKey').click(function () {
   };
 
   $.ajax(settings).done(function (response) {
-    if (response && response.id) {
-      // 如果响应包含用户 ID，存储 apiUrl 和 apiTokens
+    // 0.24 版本后无 id 字段，改为从 name 字段获取和判断认证是否成功
+    if (response && response.name) {
+      // 如果响应包含用户name "users/{id}"，存储 apiUrl 和 apiTokens
+      var userid = parseInt(response.name.split('/').pop(), 10)
       chrome.storage.sync.set(
         {
           apiUrl: apiUrl,
           apiTokens: apiTokens,
-          userid: response.id
+          userid: userid
         },
         function () {
           $.message({
@@ -288,6 +292,8 @@ $('#opensite').click(function () {
   })
 })
 
+// 0.23.1版本 GET api/v1/{parent}/tags 接口已移除，参考 https://github.com/usememos/memos/issues/4161 
+// TODO 可使用/api/v1/memos?filter=creator == 'users/1'&view=MEMO_VIEW_METADATA_ONLY 接口实现
 $('#tags').click(function () {
   get_info(function (info) {
     if (info.apiUrl) {
